@@ -17,7 +17,7 @@ const tableAttributeArray = [
     },
     {
         id: 2,
-        label: "Activity",
+        label: "Aktivitas",
         value: ["activity"],
         type: "text",
     },
