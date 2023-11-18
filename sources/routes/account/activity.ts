@@ -2,7 +2,7 @@ import express, { Router } from "express";
 
 import { headTitle } from ".";
 
-import { Activity, User } from "../../models";
+import { UserActivity, User } from "../../models";
 import {} from "../../utility";
 
 export const accountActivityRouter = Router();
@@ -37,7 +37,7 @@ accountActivityRouter.route("/").get(async (req, res) => {
         filterValue = { ...filterValue, method: methodValue };
     }
 
-    let tableItemArray: any = await Activity.find(filterValue).populate({ path: "idUser", select: "username", model: User }).sort({ createdAt: -1 }).lean();
+    let tableItemArray: any = await UserActivity.find(filterValue).populate({ path: "idUser", select: "username", model: User }).sort({ createdAt: -1 }).lean();
 
     if (userValue != undefined && !isNaN(userValue)) {
         tableItemArray = tableItemArray.filter((tableItemObject: any) => {
@@ -47,7 +47,7 @@ accountActivityRouter.route("/").get(async (req, res) => {
         });
     }
 
-    const documentCount = await Activity.countDocuments().lean();
+    const documentCount = await UserActivity.countDocuments().lean();
 
     res.render("pages/account/activity/table", {
         headTitle,
@@ -77,7 +77,7 @@ accountActivityRouter.route("/").get(async (req, res) => {
                         value:
                             documentCount >= 1
                                 ? (
-                                      (await Activity.findOne()
+                                      (await UserActivity.findOne()
                                           .select("idUser")
                                           .populate({ path: "idUser", select: "username", model: User })
                                           .sort({ createdAt: -1 })

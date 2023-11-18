@@ -3,7 +3,7 @@ import { Router } from "express";
 import { blueColorPattern, datasetYear } from "../../utility";
 import { roleCheck, roleGuard } from "../../authentication/guard/role.guard";
 
-import { Activity, User } from "../../models";
+import { UserActivity, User } from "../../models";
 
 import { accountUserRouter } from "./user";
 import { accountActivityRouter } from "./activity";
@@ -94,11 +94,11 @@ accountRouter.get("/", async (req, res) => {
             id: 2,
             title: "Aktivitas",
             icon: "eye",
-            value: await Activity.countDocuments().lean(),
+            value: await UserActivity.countDocuments().lean(),
             link: "account/activity",
         });
 
-        const activityChartData: any = await datasetYear(Activity, currentYear);
+        const activityChartData: any = await datasetYear(UserActivity, currentYear);
         lineChartChild.push({
             id: 2,
             title: "Statistik Aktivitas Baru",
@@ -126,7 +126,7 @@ accountRouter.get("/", async (req, res) => {
                             return {
                                 id: itemIndex + 1,
                                 label: itemObject.username,
-                                value: await Activity.countDocuments({ idUser: itemObject._id }).lean(),
+                                value: await UserActivity.countDocuments({ idUser: itemObject._id }).lean(),
                                 color: blueColorPattern(itemIndex + 1, userTotal),
                             };
                         })

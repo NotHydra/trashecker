@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { app } from "../..";
 import { headTitle } from ".";
 
-import { Activity, User } from "../../models";
+import { UserActivity, User } from "../../models";
 import { localMoment, upperCaseFirst } from "../../utility";
 import { roleCheck, roleConvert } from "../../authentication/guard/role.guard";
 import { DEFAULT_MAX_VERSION } from "tls";
@@ -62,7 +62,7 @@ accountUserRouter.route("/").get(async (req, res) => {
     }
 
     let tableItemArray: any = await User.find(filterValue).sort({ username: 1 }).lean();
-    const activityArray = await Activity.find().select("idUser createdAt").sort({ createdAt: -1 }).lean();
+    const activityArray = await UserActivity.find().select("idUser createdAt").sort({ createdAt: -1 }).lean();
 
     tableItemArray = await Promise.all(
         tableItemArray.map(async (tableItemObject: any) => {
@@ -602,7 +602,7 @@ accountUserRouter
 
             if (roleIsValid) {
                 try {
-                    await Activity.deleteMany({ idUser: id }).lean();
+                    await UserActivity.deleteMany({ idUser: id }).lean();
                     await User.deleteOne({ _id: id }).lean();
 
                     res.redirect("./?response=success");
