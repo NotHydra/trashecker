@@ -103,7 +103,7 @@ accountUserRouter.route("/").get(async (req, res) => {
                 cardItemChild: [
                     {
                         id: 1,
-                        title: "Dibuat",
+                        title: "Terakhir Dibuat",
                         icon: "circle-plus",
                         value: documentCount >= 1 ? (await User.findOne().select("username").sort({ createdAt: -1 }).lean()).username : "Tidak Ada",
                     },
@@ -114,7 +114,7 @@ accountUserRouter.route("/").get(async (req, res) => {
                 cardItemChild: [
                     {
                         id: 1,
-                        title: "Diubah",
+                        title: "Terakhir Diubah",
                         icon: "circle-exclamation",
                         value: documentCount >= 1 ? (await User.findOne().select("username").sort({ updatedAt: -1 }).lean()).username : "Tidak Ada",
                     },
