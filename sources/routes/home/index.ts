@@ -11,7 +11,7 @@ export const homeRouter = Router();
 export const headTitle = "Utama";
 const navActive = [1, 1];
 
-homeRouter.get("/", roleGuard(3), async (req, res) => {
+homeRouter.get("/", roleGuard(1), async (req, res) => {
     const currentYear = new Date().getFullYear();
 
     const userChartData: any = await datasetYear(User, currentYear);

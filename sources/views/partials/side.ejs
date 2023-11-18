@@ -29,54 +29,42 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 <% 
                     pageItemArray.forEach((pageItemObject, pageItemIndex) => {
-                        let parentPageAccessIsValid = false;
-
-                        pageItemObject.child.forEach((pageItemChildObject) => {
-                            if(userObject.akses.includes(pageItemChildObject.link)) {
-                                parentPageAccessIsValid = true;
-                            };
-                        });
-
-                        if (parentPageAccessIsValid || pageItemObject.child[0].link == "logout") {
-                            if (roleCheck(userObject.role, pageItemObject.level)) {
+                        if (roleCheck(userObject.role, pageItemObject.level)) {
                 %>
-                                <li class="nav-item <%= pageItemObject.id == navActive[0] ? "menu-open" : "" %>">
-                                    <a class="nav-link <%= pageItemObject.id == navActive[0] ? "active" : "" %>">
-                                        <i class="nav-icon fas fa-<%= pageItemObject.icon %>"></i>
-                                        <p>
-                                            <%= pageItemObject.title %>
-                                            <i class="right fas fa-angle-left"></i>
-                                        </p>
-                                    </a>
+                            <li class="nav-item <%= pageItemObject.id == navActive[0] ? "menu-open" : "" %>">
+                                <a class="nav-link <%= pageItemObject.id == navActive[0] ? "active" : "" %>">
+                                    <i class="nav-icon fas fa-<%= pageItemObject.icon %>"></i>
+                                    <p>
+                                        <%= pageItemObject.title %>
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
 
-                                    <ul class="nav nav-treeview">
-                                        <%
-                                            pageItemObject.child.forEach((pageItemChildObject, pageItemChildIndex) => {
-                                                if (userObject.akses.includes(pageItemChildObject.link) || pageItemChildObject.link == "logout") {
-                                                    if (roleCheck(userObject.role, pageItemChildObject.level)) {    
-                                        %>
-                                                        <li class="nav-item">
-                                                            <% if (!pageItemChildObject.confirm) { %>
-                                                                <a href="/<%= pageItemChildObject.link %>" class="nav-link <%= pageItemObject.id == navActive[0] && pageItemChildObject.id == navActive[1] ? "active" : "" %>">
-                                                                    <i class="<%= pageItemChildObject.icon == "circle" ? "far" : "fas" %> fa-<%= pageItemChildObject.icon %> nav-icon"></i>
-                                                                    <p><%= pageItemChildObject.title %></p>
-                                                                </a>
-                                                            <% } else if (pageItemChildObject.confirm) { %>
-                                                                <a class="nav-link <%= pageItemObject.id == navActive[0] && pageItemChildObject.id == navActive[1] ? "active" : "" %>" onclick="confirmModal('location', '/<%= pageItemChildObject.link %>')">
-                                                                    <i class="<%= pageItemChildObject.icon == "circle" ? "far" : "fas" %> fa-<%= pageItemChildObject.icon %> nav-icon"></i>
-                                                                    <p><%= pageItemChildObject.title %></p>
-                                                                </a>
-                                                            <% } %>
-                                                        </li>
-                                        <% 
-                                                    }
-                                                }
-                                            }); 
-                                        %>
-                                    </ul>
-                                </li>
+                                <ul class="nav nav-treeview">
+                                    <%
+                                        pageItemObject.child.forEach((pageItemChildObject, pageItemChildIndex) => {
+                                            if (roleCheck(userObject.role, pageItemChildObject.level)) {    
+                                    %>
+                                                <li class="nav-item">
+                                                    <% if (!pageItemChildObject.confirm) { %>
+                                                        <a href="/<%= pageItemChildObject.link %>" class="nav-link <%= pageItemObject.id == navActive[0] && pageItemChildObject.id == navActive[1] ? "active" : "" %>">
+                                                            <i class="<%= pageItemChildObject.icon == "circle" ? "far" : "fas" %> fa-<%= pageItemChildObject.icon %> nav-icon"></i>
+                                                            <p><%= pageItemChildObject.title %></p>
+                                                        </a>
+                                                    <% } else if (pageItemChildObject.confirm) { %>
+                                                        <a class="nav-link <%= pageItemObject.id == navActive[0] && pageItemChildObject.id == navActive[1] ? "active" : "" %>" onclick="confirmModal('location', '/<%= pageItemChildObject.link %>')">
+                                                            <i class="<%= pageItemChildObject.icon == "circle" ? "far" : "fas" %> fa-<%= pageItemChildObject.icon %> nav-icon"></i>
+                                                            <p><%= pageItemChildObject.title %></p>
+                                                        </a>
+                                                    <% } %>
+                                                </li>
+                                    <% 
+                                            }
+                                        }); 
+                                    %>
+                                </ul>
+                            </li>
                 <%
-                            }
                         }
                     });
                 %>

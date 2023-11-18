@@ -16,7 +16,6 @@ export async function sessionData(req: Request, res: Response, next: NextFunctio
     userObject.roleDisplay = upperCaseFirst(userObject.role);
 
     if (userObject != null) {
-        app.locals.userType = req.session.userType;
         app.locals.userObject = userObject;
 
         next();

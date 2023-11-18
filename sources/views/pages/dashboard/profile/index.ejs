@@ -29,10 +29,7 @@
                                             <%- include("./../../../partials/input-detailed.ejs", {detailedInputArray}); -%>
 
                                             <a type="button" href="/<%= pageItemCurrent.link %>/update" class="btn btn-block btn-warning">Ubah</a>
-
-                                            <% if (userType == "user") { %>
-                                                <a type="button" href="/<%= pageItemCurrent.link %>/update-password" class="btn btn-block btn-danger">Ubah Password</a>
-                                            <% } %>
+                                            <a type="button" href="/<%= pageItemCurrent.link %>/update-password" class="btn btn-block btn-danger">Ubah Password</a>
                                         </form>
                                     </div>
                                 </div>

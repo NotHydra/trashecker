@@ -22,7 +22,7 @@ export const pageItemArray: pageItemType[] = [
             {
                 id: 2,
                 title: "Data Pribadi",
-                link: "data-pribadi",
+                link: "profile",
                 icon: "circle-user",
                 level: 1,
                 confirm: false,

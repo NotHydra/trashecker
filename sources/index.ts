@@ -14,13 +14,12 @@ import { sessionData } from "./common/middleware/sessionData";
 import { requestCounter } from "./common/middleware/requestCounter";
 
 import { authenticationRouter } from "./authentication";
-// import { homeRouter } from "./routes/home";
+import { homeRouter } from "./routes/home";
 // import { accountRouter } from "./routes/account";
 
 declare module "express-session" {
     interface Session {
         userId: number;
-        userType: string;
     }
 }
 
@@ -58,7 +57,7 @@ app.use(sessionData);
 app.use(requestCounter);
 
 app.use(roleGuard(1));
-// app.use("/", homeRouter);
+app.use("/", homeRouter);
 
 app.use(roleGuard(2));
 // app.use("/account", accountRouter);
