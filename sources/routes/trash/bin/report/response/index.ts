@@ -87,70 +87,54 @@ responseReportBinTrashRouter
         }
     });
 
-// responseReportBinTrashRouter
-//     .route("/delete")
-//     .get(async (req, res) => {
-//         const id = req.query.id;
-//         const dataExist = await Bin.exists({ _id: id }).lean();
+responseReportBinTrashRouter
+    .route("/delete")
+    .get(async (req, res) => {
+        const id = req.query.id;
+        const idBin = req.query.idBin;
+        const idBinReport = req.query.idBinReport;
+        const dataExist = await BinReportResponse.exists({ _id: id }).lean();
 
-//         if (dataExist != null) {
-//             const itemObject = await Bin.findOne({ _id: id }).select({ name: true, location: true, status: true }).lean();
-//             res.render("pages/delete", {
-//                 headTitle,
-//                 navActive,
-//                 toastResponse: req.query.response,
-//                 toastTitle: req.query.response == "success" ? "Data Berhasil Dihapus" : "Data Gagal Dihapus",
-//                 toastText: req.query.text,
-//                 id,
-//                 detailedInputArray: [
-//                     {
-//                         id: 1,
-//                         name: "name",
-//                         display: "Nama",
-//                         type: "text",
-//                         value: itemObject.name,
-//                         placeholder: "Input nama disini",
-//                         enable: false,
-//                     },
-//                     {
-//                         id: 2,
-//                         name: "location",
-//                         display: "Lokasi",
-//                         type: "text",
-//                         value: itemObject.location,
-//                         placeholder: "Input lokasi disini",
-//                         enable: false,
-//                     },
-//                     {
-//                         id: 3,
-//                         name: "status",
-//                         display: "Status",
-//                         type: "text",
-//                         value: itemObject.status == true ? "Penuh" : "Kosong",
-//                         placeholder: "Input status disini",
-//                         enable: false,
-//                     },
-//                 ],
-//             });
-//         } else if (dataExist == null) {
-//             res.redirect("./?response=error&text=Data tidak valid");
-//         }
-//     })
-//     .post(async (req, res) => {
-//         const id = req.query.id;
-//         const dataExist = await Bin.exists({ _id: id }).lean();
+        if (dataExist != null) {
+            const itemObject = await BinReportResponse.findOne({ _id: id }).select({ message: true }).lean();
+            res.render("pages/trash/bin/report/response/delete", {
+                headTitle,
+                navActive,
+                toastResponse: req.query.response,
+                toastTitle: req.query.response == "success" ? "Data Berhasil Dihapus" : "Data Gagal Dihapus",
+                toastText: req.query.text,
+                id,
+                detailedInputArray: [
+                    {
+                        id: 1,
+                        name: "message",
+                        display: "Pesan",
+                        type: "textarea",
+                        value: itemObject.message,
+                        placeholder: "Input pesan disini",
+                        enable: false,
+                    },
+                ],
+                idBin: idBin,
+                idBinReport: idBinReport,
+            });
+        } else {
+            res.redirect(`./?idBin=${idBin}&id=${idBinReport}&response=error&text=Data tidak valid`);
+        }
+    })
+    .post(async (req, res) => {
+        const id = req.query.id;
+        const dataExist = await BinReportResponse.exists({ _id: id }).lean();
 
-//         if (dataExist != null) {
-//             try {
-//                 await BinReport.deleteMany({ idBin: id }).lean();
-//                 await BinActivity.deleteMany({ idBin: id }).lean();
-//                 await Bin.deleteOne({ _id: id }).lean();
+        if (dataExist != null) {
+            try {
+                await BinReportResponse.deleteOne({ _id: id }).lean();
 
-//                 res.redirect("./?response=success");
-//             } catch (error: any) {
-//                 res.redirect(`delete?id=${id}&response=error`);
-//             }
-//         } else {
-//             res.redirect("./?response=error&text=Data tidak valid");
-//         }
-//     });
+                res.redirect(`./?idBin=${req.query.idBin}&id=${req.query.idBinReport}&response=success`);
+            } catch (error: any) {
+                res.redirect(`delete?idBin=${req.query.idBin}&idBinReport=${req.query.idBinReport}&id=${id}&response=error`);
+            }
+        } else {
+            res.redirect(`./?idBin=${req.query.idBin}&id=${req.query.idBinReport}&response=error&text=Data tidak valid`);
+        }
+    });

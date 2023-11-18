@@ -52,7 +52,7 @@
                                                                 <td class="td-custom"><%= tableItemObject.message %></td>
                                                                 <td class="td-custom"><%= moment(tableItemObject.createdAt).format("DD-MM-YYYY") %></td>
                                                                 <td class="td-custom">
-                                                                    <a type="button" class="btn btn-block btn-danger" href="/<%= pageItemCurrent.link %>/report/response/?idBin=<%= idBin %>&idBinReport=<%= idBinReport %>&id=<%= tableItemObject._id %>">Hapus</a>
+                                                                    <a type="button" class="btn btn-block btn-danger" href="/<%= pageItemCurrent.link %>/report/response/delete?idBin=<%= idBin %>&idBinReport=<%= idBinReport %>&id=<%= tableItemObject._id %>">Hapus</a>
                                                                 </td>
                                                             </tr>
                                                 <% 
