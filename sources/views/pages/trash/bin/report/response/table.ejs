@@ -36,7 +36,14 @@
                                                     <th class="th-custom export">No.</th>
                                                     <th class="th-custom export">Pesan</th>
                                                     <th class="th-custom export">Dibuat</th>
-                                                    <th class="th-custom">Aksi</th>
+
+                                                    <% 
+                                                        if (!reportIsClose) {
+                                                    %>
+                                                        <th class="th-custom">Aksi</th>
+                                                    <%
+                                                        }
+                                                    %>
                                                 </tr>
                                             </thead>
 
@@ -51,9 +58,16 @@
                                                                 <td class="td-custom"><%= number %>.</td>
                                                                 <td class="td-custom"><%= tableItemObject.message %></td>
                                                                 <td class="td-custom"><%= moment(tableItemObject.createdAt).format("DD-MM-YYYY") %></td>
-                                                                <td class="td-custom">
-                                                                    <a type="button" class="btn btn-block btn-danger" href="/<%= pageItemCurrent.link %>/report/response/delete?idBin=<%= idBin %>&idBinReport=<%= idBinReport %>&id=<%= tableItemObject._id %>">Hapus</a>
-                                                                </td>
+                                                                
+                                                                <% 
+                                                                    if (!reportIsClose) {
+                                                                %>
+                                                                    <td class="td-custom">
+                                                                        <a type="button" class="btn btn-block btn-danger" href="/<%= pageItemCurrent.link %>/report/response/delete?idBin=<%= idBin %>&idBinReport=<%= idBinReport %>&id=<%= tableItemObject._id %>">Hapus</a>
+                                                                    </td>
+                                                                <%
+                                                                    }
+                                                                %>
                                                             </tr>
                                                 <% 
                                                         });
@@ -66,7 +80,14 @@
                                                     <th class="th-custom export">No.</th>
                                                     <th class="th-custom export">Pesan</th>
                                                     <th class="th-custom export">Dibuat</th>
-                                                    <th class="th-custom">Aksi</th>
+
+                                                    <% 
+                                                        if (!reportIsClose) {
+                                                    %>
+                                                        <th class="th-custom">Aksi</th>
+                                                    <%
+                                                        }
+                                                    %>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -77,7 +98,14 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <a type="button" class="btn btn-block btn-primary" href="/trash/bin/report/response/create?idBin=<%= idBin %>&id=<%= idBinReport %>">Buat</a>
+                                <% 
+                                    if (!reportIsClose) {
+                                %>
+                                    <a type="button" class="btn btn-block btn-primary" href="/trash/bin/report/response/create?idBin=<%= idBin %>&id=<%= idBinReport %>">Buat</a>
+                                <%
+                                    }
+                                %>
+
                                 <a type="button" class="btn btn-block btn-danger" onclick="confirmModal('location', '/trash/bin/report?id=<%= idBin %>')">Kembali</a>
                             </div>
                         </div>

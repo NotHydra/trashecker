@@ -15,6 +15,11 @@ responseReportBinTrashRouter.route("/").get(async (req, res) => {
     const id = req.query.id;
     const idBin = req.query.idBin;
 
+    let reportIsClose = false;
+    if (await BinReport.exists({ _id: id, status: 3 }).lean()) {
+        reportIsClose = true;
+    }
+
     let tableItemArray: any = await BinReportResponse.find({ idBinReport: id }).sort({ createdAt: -1 }).lean();
 
     res.render("pages/trash/bin/report/response/table", {
@@ -40,6 +45,7 @@ responseReportBinTrashRouter.route("/").get(async (req, res) => {
         tableItemArray: tableItemArray,
         idBin: idBin,
         idBinReport: id,
+        reportIsClose: reportIsClose,
     });
 });
 
