@@ -1,0 +1,50 @@
+<% donutChartArray.forEach((donutChartObject, donutChartIndex) => { %>
+    <div class="row">
+        <% donutChartObject.donutChartChild.forEach((donutChartChildObject, donutChartChildIndex) => { %>
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-header border-0 white-border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a class="card-title" href="/<%= donutChartChildObject.link.link %>" style="color: inherit;"><%= donutChartChildObject.title %></a>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <canvas id="donut-chart-<%= donutChartIndex + 1 %>-<%= donutChartChildIndex + 1 %>" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+
+                <script>
+                    $(function() {
+                        const dataset = eval('<%- JSON.stringify(donutChartChildObject.dataset) %>');
+
+                        new Chart($('#donut-chart-<%= donutChartIndex + 1 %>-<%= donutChartChildIndex + 1 %>').get(0).getContext('2d'), {
+                            type: 'doughnut',
+                            data: {
+                                labels: dataset.map((datasetObject) => {return datasetObject.label}),
+                                datasets: [
+                                    {
+                                        data: dataset.map((datasetObject) => {return datasetObject.value}),
+                                        backgroundColor: dataset.map((datasetObject) => {return datasetObject.color})
+                                    }
+                                ]
+                            },
+                            options: {
+                                maintainAspectRatio : false,
+                                responsive : true,
+                                legend: {
+                                    labels: {
+                                        generateLabels: (chart) => {
+                                            return "";
+                                        }
+                                    }
+                                },
+                                hover: {mode: null},
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        <% }); %>
+    </div>
+<% }); %>

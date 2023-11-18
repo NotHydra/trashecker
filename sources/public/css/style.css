@@ -1,0 +1,43 @@
+.th-custom {
+  text-align: center;
+  vertical-align: middle !important;
+  white-space: nowrap;
+}
+
+.td-custom {
+  text-align: center;
+  vertical-align: middle !important;
+  white-space: nowrap;
+}
+
+.td-textarea {
+  text-align: justify;
+  white-space: pre;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.colored-toast {
+  background-color: #343a40 !important;
+}
+.colored-toast .swal2-title {
+  color: #f8f9fa !important;
+}
+.colored-toast .swal2-timer-progress-bar {
+  background-color: #f8f9fa !important;
+}
+
+.white-border-top {
+  border-top: 2px solid #f8f9fa !important;
+}
+
+.white-border-bottom {
+  border-bottom: 2px solid #f8f9fa !important;
+}
+
+.white-border-side {
+  border-right: 2px solid #f8f9fa !important;
+  border-left: 2px solid #f8f9fa !important;
+}/*# sourceMappingURL=style.css.map */

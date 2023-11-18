@@ -1,0 +1,24 @@
+<% cardItemArray.forEach(cardItemObject => { %>
+    <div class="row">
+        <% cardItemObject.cardItemChild.forEach(cardItemChildObject => { %>
+            <div class="col-sm">
+                <div class="small-box bg-dark">
+                    <div class="inner">
+                        <h3><%= cardItemChildObject.value %></h3>
+
+                        <p><%= cardItemChildObject.title %></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-<%= cardItemChildObject.icon %>"></i>
+                    </div>
+
+                    <% if (cardItemChildObject.link) { %>
+                        <a href="/<%= cardItemChildObject.link %>" class="small-box-footer">
+                            Informasi Tambahan <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% }); %>

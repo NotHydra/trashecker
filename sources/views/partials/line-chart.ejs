@@ -1,0 +1,131 @@
+<script>
+    const ticksStyle = {
+        fontColor: '#495057',
+        fontStyle: 'bold'
+    };
+
+    const mode = 'index';
+    const intersect = true;
+</script>
+
+<% lineChartArray.forEach((lineChartObject, lineChartIndex) => { %>
+    <div class="row">
+        <% lineChartObject.lineChartChild.forEach((lineChartChildObject, lineChartChildIndex) => { %>
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-header border-0 white-border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a class="card-title" href="/<%= lineChartChildObject.link.link %>" style="color: inherit;"><%= lineChartChildObject.title %></a>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <p class="d-flex flex-column">
+                                <span class="text-bold text-lg"><%= lineChartChildObject.value %></span>
+                                <span><%= lineChartChildObject.text %></span>   
+                            </p>
+
+                            <p class="ml-auto d-flex flex-column text-right">
+                                <span class="text-success">
+                                <i class="fas fa-arrow-up"></i> <%= lineChartChildObject.percentage %> %
+                                </span>
+                                <span class="text-muted"><%= lineChartChildObject.timeRange %></span>
+                            </p>
+                        </div>
+
+                        <div class="position-relative mb-4">
+                            <canvas id="line-chart-<%= lineChartIndex + 1 %>-<%= lineChartChildIndex + 1 %>" height="200"></canvas>
+                        </div>
+
+                        <div class="d-flex flex-row justify-content-end">
+                            <span class="mr-2">
+                                <i class="fas fa-square text-primary"></i> <%= lineChartChildObject.firstLegend %>
+                            </span>
+
+                            <span>
+                                <i class="fas fa-square text-gray"></i> <%= lineChartChildObject.secondLegend %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    $(function() {
+                        const dataset = eval('<%- JSON.stringify(lineChartChildObject.dataset) %>');
+                        
+                        const datasetCurrentArray = dataset.map((datasetObject) => {return datasetObject.current});
+                        const datasetLastArray = dataset.map((datasetObject) => {return datasetObject.last});
+
+                        const datasetHighestValue = Math.max(...[Math.max(...datasetCurrentArray), Math.max(...datasetLastArray)]);
+
+                        new Chart($('#line-chart-<%= lineChartIndex + 1 %>-<%= lineChartChildIndex + 1 %>'), {
+                            data: {
+                                labels: dataset.map((datasetObject) => {return datasetObject.label}),
+                                datasets: [
+                                    {
+                                        type: 'line',
+                                        data: datasetCurrentArray,
+                                        borderColor: '#007bff',
+                                        pointBorderColor: '#007bff',
+                                        pointBackgroundColor: '#007bff',
+                                        fill: false,
+                                    },
+                                    {
+                                        type: 'line',
+                                        data: datasetLastArray,
+                                        borderColor: '#ced4da',
+                                        pointBorderColor: '#ced4da',
+                                        pointBackgroundColor: '#ced4da',
+                                        fill: false
+                                    }
+                                ]
+                            },
+                            options: {
+                                maintainAspectRatio: false,
+                                tooltips: {
+                                    mode: mode,
+                                    intersect: intersect
+                                },
+                                hover: {
+                                    mode: mode,
+                                    intersect: intersect
+                                },
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            gridLines: {
+                                                display: true,
+                                                lineWidth: '4px',
+                                                color: 'rgba(0, 0, 0, .2)',
+                                                zeroLineColor: 'transparent'
+                                            },
+                                            ticks: $.extend(
+                                                {
+                                                    beginAtZero: true,
+                                                    suggestedMax: datasetHighestValue,
+                                                },
+                                                ticksStyle
+                                            )
+                                        }
+                                    ],
+                                    xAxes: [
+                                        {
+                                            gridLines: {
+                                                display: false
+                                            },
+                                            ticks: ticksStyle
+                                        }
+                                    ]
+                                }
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        <% }); %>
+    </div>
+<% }); %>

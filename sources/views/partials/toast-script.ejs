@@ -1,0 +1,25 @@
+<% 
+    try {
+        if (toastResponse !== undefined && ["success", "error"].includes(toastResponse)) {            
+%>
+            <script>
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    customClass: {
+                        popup: "colored-toast",
+                    },
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                });
+
+                Toast.fire({
+                    icon: "<%= toastResponse; %>",
+                    title: "<%= toastTitle; %>",
+                    text: "<%= toastText; %>",
+                }) 
+            </script>
+<%      }
+    } catch (error) {}
+%>

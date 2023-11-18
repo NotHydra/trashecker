@@ -1,0 +1,50 @@
+$light: #f8f9fa;
+$dark: #343a40;
+
+.th-custom {
+    text-align: center;
+    vertical-align: middle !important;
+    white-space: nowrap;
+}
+
+.td-custom {
+    text-align: center;
+    vertical-align: middle !important;
+    white-space: nowrap;
+}
+
+.td-textarea {
+    text-align: justify;
+    white-space: pre;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.colored-toast {
+    background-color: $dark !important;
+
+    .swal2-title {
+        color: $light !important;
+    }
+
+    .swal2-timer-progress-bar {
+        background-color: $light !important;
+    }
+}
+
+$borderWidth: 2px;
+$borderColor: $light;
+.white-border-top {
+    border-top: $borderWidth solid $borderColor !important;
+}
+
+.white-border-bottom {
+    border-bottom: $borderWidth solid $borderColor !important;
+}
+
+.white-border-side {
+    border-right: $borderWidth solid $borderColor !important;
+    border-left: $borderWidth solid $borderColor !important;
+}
