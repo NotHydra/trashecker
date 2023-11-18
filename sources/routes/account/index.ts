@@ -156,4 +156,4 @@ accountRouter.get("/", async (req, res) => {
 });
 
 accountRouter.use("/user", accountUserRouter);
-accountRouter.use("/activity", roleGuard(2), accountActivityRouter);
+accountRouter.use("/activity", accountActivityRouter);

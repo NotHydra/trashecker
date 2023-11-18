@@ -15,7 +15,7 @@ import { requestCounter } from "./common/middleware/requestCounter";
 
 import { authenticationRouter } from "./authentication";
 import { homeRouter } from "./routes/home";
-// import { accountRouter } from "./routes/account";
+import { accountRouter } from "./routes/account";
 
 declare module "express-session" {
     interface Session {
@@ -60,7 +60,7 @@ app.use(roleGuard(1));
 app.use("/", homeRouter);
 
 app.use(roleGuard(2));
-// app.use("/account", accountRouter);
+app.use("/account", accountRouter);
 app.use(require("express-status-monitor")());
 
 app.use((req, res) => {
