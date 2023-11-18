@@ -1,5 +1,5 @@
 <% 
-    const viewPath = "./../../.." 
+    const viewPath = "./../../../.."
     const pageItemCurrent = findPageItemChild(navActive[0], navActive[1]); 
 %>
 
@@ -34,13 +34,8 @@
                                             <thead>
                                                 <tr>
                                                     <th class="th-custom export">No.</th>
-                                                    <th class="th-custom export">Nama</th>
-                                                    <th class="th-custom export">Lokasi</th>
                                                     <th class="th-custom export">Status</th>
-                                                    <th class="th-custom export">Aktivitas</th>
                                                     <th class="th-custom export">Dibuat</th>
-                                                    <th class="th-custom export">Diubah</th>
-                                                    <th class="th-custom">Aksi</th>
                                                 </tr>
                                             </thead>
 
@@ -53,20 +48,10 @@
                                                 %>
                                                             <tr>
                                                                 <td class="td-custom"><%= number %>.</td>
-                                                                <td class="td-custom"><%= tableItemObject.name %></td>
-                                                                <td class="td-custom"><%= tableItemObject.location %></td>
                                                                 <td class="td-custom">
                                                                     <div class="btn btn-block btn-<%= tableItemObject.status == true ? "danger" : "success" %>" style="pointer-events:none"><%= tableItemObject.status == true ? "Penuh" : "Kosong" %></div>
                                                                 </td>
-                                                                <td class="td-custom"><%= tableItemObject.activity %></td>
                                                                 <td class="td-custom"><%= moment(tableItemObject.createdAt).format("DD-MM-YYYY") %></td>
-                                                                <td class="td-custom"><%= moment(tableItemObject.updatedAt).fromNow() %></td>
-                                                                <td class="td-custom">
-                                                                    <a type="button" class="btn btn-block btn-primary" href="/<%= pageItemCurrent.link %>/activity?id=<%= tableItemObject._id %>">Aktivitas</a>
-                                                                    <a type="button" class="btn btn-block btn-warning" href="/<%= pageItemCurrent.link %>/report?id=<%= tableItemObject._id %>">Laporan</a>
-                                                                    <a type="button" class="btn btn-block btn-warning" href="/<%= pageItemCurrent.link %>/update?id=<%= tableItemObject._id %>">Ubah</a>
-                                                                    <a type="button" class="btn btn-block btn-danger" href="/<%= pageItemCurrent.link %>/delete?id=<%= tableItemObject._id %>">Hapus</a>
-                                                                </td>
                                                             </tr>
                                                 <% 
                                                         });
@@ -77,13 +62,8 @@
                                             <tfoot>
                                                 <tr>
                                                     <th class="th-custom">No.</th>
-                                                    <th class="th-custom">Nama</th>
-                                                    <th class="th-custom">Lokasi</th>
                                                     <th class="th-custom">Status</th>
-                                                    <th class="th-custom">Aktivitas</th>
                                                     <th class="th-custom">Dibuat</th>
-                                                    <th class="th-custom">Diubah</th>
-                                                    <th class="th-custom">Aksi</th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -94,7 +74,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <a type="button" class="btn btn-block btn-primary" href="/<%= pageItemCurrent.link %>/create">Buat</a>
+                                <a type="button" class="btn btn-block btn-danger" onclick="confirmModal('location', '/trash/bin')">Kembali</a>
                             </div>
                         </div>
                     </div>

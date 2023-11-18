@@ -1,0 +1,32 @@
+[
+    {
+        "_id": 1,
+        "idBin": 1,
+        "status": false,
+        "createdAt": {
+            "$date": {
+                "$numberLong": "1665287910000"
+            }
+        }
+    },
+    {
+        "_id": 2,
+        "idBin": 2,
+        "status": false,
+        "createdAt": {
+            "$date": {
+                "$numberLong": "1665287910000"
+            }
+        }
+    },
+    {
+        "_id": 3,
+        "idBin": 3,
+        "status": true,
+        "createdAt": {
+            "$date": {
+                "$numberLong": "1665287910000"
+            }
+        }
+    }
+]

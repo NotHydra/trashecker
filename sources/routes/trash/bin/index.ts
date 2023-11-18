@@ -1,12 +1,12 @@
 import express, { Router } from "express";
 import bcrypt from "bcrypt";
 
-import { app } from "../..";
-import { headTitle } from ".";
+import { app } from "../../..";
+import { headTitle } from "..";
 
-import { Bin, BinActivity, BinReport } from "../../models";
-import { localMoment, upperCaseFirst } from "../../utility";
-import { roleCheck, roleConvert } from "../../authentication/guard/role.guard";
+import { Bin, BinActivity, BinReport } from "../../../models";
+import { localMoment, upperCaseFirst } from "../../../utility";
+import { roleCheck, roleConvert } from "../../../authentication/guard/role.guard";
 
 const navActive = [3, 2];
 export const binTrashRouter = Router();
@@ -146,6 +146,36 @@ binTrashRouter
             res.redirect("create?response=error&text=Data tidak lengkap");
         }
     });
+
+binTrashRouter.route("/activity").get(async (req, res) => {
+    const id: any = req.query.id;
+    let tableItemArray: any = await BinActivity.find({ idBin: id }).select({ status: true, createdAt: true }).sort({ createdAt: -1 }).lean();
+
+    const documentCount = await BinActivity.countDocuments().lean();
+
+    res.render("pages/trash/bin/activity/table", {
+        headTitle,
+        navActive,
+        toastResponse: req.query.response,
+        toastTitle: req.query.response == "success" ? "Berhasil" : "Gagal",
+        toastText: req.query.text,
+        cardItemArray: [
+            {
+                id: 1,
+                cardItemChild: [
+                    {
+                        id: 1,
+                        title: "Aktivitas",
+                        icon: "eye",
+                        value: documentCount,
+                    },
+                ],
+            },
+        ],
+        filterArray: [],
+        tableItemArray,
+    });
+});
 
 binTrashRouter
     .route("/update")
