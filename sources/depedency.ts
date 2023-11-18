@@ -31,7 +31,7 @@ export const pageItemArray: pageItemType[] = [
     },
     {
         id: 2,
-        title: "Pengguna",
+        title: "Akun",
         icon: "users",
         level: 2,
         child: [

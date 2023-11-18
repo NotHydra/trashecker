@@ -10,7 +10,7 @@ import { accountActivityRouter } from "./activity";
 import { app } from "../..";
 
 export const accountRouter = Router();
-export const headTitle = "Pengguna";
+export const headTitle = "Akun";
 const navActive = [2, 1];
 
 accountRouter.get("/", async (req, res) => {
