@@ -1,0 +1,53 @@
+<% 
+    const viewPath = "./../../../../.."
+    const pageItemCurrent = findPageItemChild(navActive[0], navActive[1]);
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include(`${viewPath}/partials/head.ejs`); -%>
+        <%- include(`${viewPath}/partials/select-head.ejs`); -%>
+        <%- include(`${viewPath}/partials/sweet-alert-head.ejs`); -%>
+        <%- include(`${viewPath}/partials/confirm-modal.ejs`); -%>
+    </head>
+
+    <body class="hold-transition sidebar-mini dark-mode layout-navbar-fixed layout-fixed text-smq">
+        <div class="wrapper">
+            <%- include(`${viewPath}/partials/nav.ejs`); -%>
+            <%- include(`${viewPath}/partials/side.ejs`); -%>
+
+            <div class="content-wrapper">
+                <div class="content">
+                    <div class="container-fluid">
+                        <br>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card py-2">
+                                    <div class="card-body pt-0 pb-3">
+                                        <%- include(`${viewPath}/partials/form-head.ejs`, {extraTitle: "Buat"}); -%>
+
+                                        <form action="/<%= pageItemCurrent.link %>/report/response/create?idBin=<%= idBin %>&id=<%= idBinReport %>" method="POST" onsubmit="return confirmModal('form', this);">
+                                            <%- include(`${viewPath}/partials/input-detailed.ejs`, {detailedInputArray}); -%>
+
+                                            <button type="submit" class="btn btn-block btn-primary">Buat</button>
+                                            <a type="button" class="btn btn-block btn-danger" onclick="confirmModal('location', './?idBin=<%= idBin %>&id=<%= idBinReport %>')">Kembali</a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%- include(`${viewPath}/partials/footer.ejs`); -%>
+        </div>
+
+        <%- include(`${viewPath}/partials/script.ejs`); -%>
+    </body>
+
+    <%- include(`${viewPath}/partials/select-script.ejs`); -%>
+    <%- include(`${viewPath}/partials/toast-script.ejs`); -%>
+</html>

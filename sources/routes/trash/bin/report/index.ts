@@ -4,6 +4,7 @@ import { headTitle } from "../..";
 
 import { Bin, BinActivity, BinReport } from "../../../../models";
 import { localMoment, upperCaseFirst } from "../../../../utility";
+import { responseReportBinTrashRouter } from "./response";
 
 const navActive = [3, 2];
 export const reportBinTrashRouter = Router();
@@ -44,3 +45,99 @@ reportBinTrashRouter.route("/").get(async (req, res) => {
         idBin: id,
     });
 });
+
+reportBinTrashRouter.route("/accept").get(async (req, res) => {
+    const id = req.query.id;
+    const idBin = req.query.idBin;
+    const dataExist = await BinReport.exists({ _id: id, idBin: idBin, status: 0 }).lean();
+
+    if (dataExist != null) {
+        try {
+            await BinReport.updateOne(
+                { _id: id },
+                {
+                    status: 2,
+                }
+            ).lean();
+
+            res.redirect(`./?id=${idBin}&response=success`);
+        } catch (error: any) {
+            res.redirect(`./?id=${idBin}&response=error`);
+        }
+    } else if (dataExist == null) {
+        res.redirect(`./?id=${idBin}&response=error&text=Data tidak valid`);
+    }
+});
+
+reportBinTrashRouter.route("/reject").get(async (req, res) => {
+    const id = req.query.id;
+    const idBin = req.query.idBin;
+    const dataExist = await BinReport.exists({ _id: id, idBin: idBin, status: 0 }).lean();
+
+    if (dataExist != null) {
+        try {
+            await BinReport.updateOne(
+                { _id: id },
+                {
+                    status: 1,
+                }
+            ).lean();
+
+            res.redirect(`./?id=${idBin}&response=success`);
+        } catch (error: any) {
+            res.redirect(`./?id=${idBin}&response=error`);
+        }
+    } else if (dataExist == null) {
+        res.redirect(`./?id=${idBin}&response=error&text=Data tidak valid`);
+    }
+});
+
+reportBinTrashRouter.route("/cancel").get(async (req, res) => {
+    const id = req.query.id;
+    const idBin = req.query.idBin;
+    const dataObject = await BinReport.findOne({ _id: id, idBin: idBin, status: { $ne: 0 } })
+        .select({ status: true })
+        .lean();
+
+    if (dataObject != null) {
+        try {
+            await BinReport.updateOne(
+                { _id: id },
+                {
+                    status: [1, 2].includes(dataObject.status) ? 0 : 2,
+                }
+            ).lean();
+
+            res.redirect(`./?id=${idBin}&response=success`);
+        } catch (error: any) {
+            res.redirect(`./?id=${idBin}&response=error`);
+        }
+    } else {
+        res.redirect(`./?id=${idBin}&response=error&text=Data tidak valid`);
+    }
+});
+
+reportBinTrashRouter.route("/done").get(async (req, res) => {
+    const id = req.query.id;
+    const idBin = req.query.idBin;
+    const dataExist = await BinReport.exists({ _id: id, idBin: idBin, status: 2 }).lean();
+
+    if (dataExist != null) {
+        try {
+            await BinReport.updateOne(
+                { _id: id },
+                {
+                    status: 3,
+                }
+            ).lean();
+
+            res.redirect(`./?id=${idBin}&response=success`);
+        } catch (error: any) {
+            res.redirect(`./?id=${idBin}&response=error`);
+        }
+    } else if (dataExist == null) {
+        res.redirect(`./?id=${idBin}&response=error&text=Data tidak valid`);
+    }
+});
+
+reportBinTrashRouter.use("/response", responseReportBinTrashRouter);
