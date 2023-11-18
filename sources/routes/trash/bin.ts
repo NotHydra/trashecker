@@ -51,8 +51,8 @@ binTrashRouter.route("/").get(async (req, res) => {
                 cardItemChild: [
                     {
                         id: 1,
-                        title: "Bin",
-                        icon: "user",
+                        title: "Tempat Pembuangan",
+                        icon: "dumpster",
                         value: await Bin.countDocuments().lean(),
                     },
                     {
@@ -64,7 +64,7 @@ binTrashRouter.route("/").get(async (req, res) => {
                     {
                         id: 3,
                         title: "Kosong",
-                        icon: "circle-exclamation",
+                        icon: "circle-minus",
                         value: await Bin.countDocuments({ status: false }).lean(),
                     },
                 ],

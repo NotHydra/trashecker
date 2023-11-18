@@ -64,7 +64,7 @@ export const pageItemArray: pageItemType[] = [
     {
         id: 3,
         title: "Sampah",
-        icon: "users",
+        icon: "trash",
         level: 1,
         child: [
             {
@@ -79,7 +79,7 @@ export const pageItemArray: pageItemType[] = [
                 id: 2,
                 title: "Tempat Pembuangan",
                 link: "trash/bin",
-                icon: "user",
+                icon: "dumpster",
                 level: 1,
                 confirm: false,
             },
@@ -95,7 +95,7 @@ export const pageItemArray: pageItemType[] = [
                 id: 4,
                 title: "Laporan",
                 link: "trash/bin-report",
-                icon: "eye",
+                icon: "clipboard",
                 level: 1,
                 confirm: false,
             },
@@ -103,7 +103,7 @@ export const pageItemArray: pageItemType[] = [
                 id: 5,
                 title: "Respon",
                 link: "trash/bin-report-respon",
-                icon: "eye",
+                icon: "pen-nib",
                 level: 1,
                 confirm: false,
             },
