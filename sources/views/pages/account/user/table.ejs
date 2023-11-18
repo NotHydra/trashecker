@@ -72,7 +72,19 @@
                                                                 
                                                                         if (tableAttributeObject.type != "textarea") {
                                                                 %>
-                                                                            <td class="td-custom"><%= (tableAttributeObject.type != "date" && tableItemValue != null) || (tableAttributeObject.type == "date" && tableItemValue != "Invalid date") ? tableItemValue : "Tidak Ada" %></td>
+                                                                            <td class="td-custom">
+                                                                                <%
+                                                                                    if (tableAttributeObject.value[0] == "status") {
+                                                                                %>
+                                                                                        <div class="btn btn-block btn-<%= tableItemValue == "Aktif" ? "success" : "danger" %>" style="pointer-events:none"><%= tableItemValue %></div>
+                                                                                <%
+                                                                                    } else {
+                                                                                %>
+                                                                                        <%= (tableAttributeObject.type != "date" && tableItemValue != null) || (tableAttributeObject.type == "date" && tableItemValue != "Invalid date") ? tableItemValue : "Tidak Ada" %>
+                                                                                <%
+                                                                                    }
+                                                                                %>
+                                                                            </td>
                                                                 <%
                                                                         } else if (tableAttributeObject.type == "textarea") {
                                                                 %>
