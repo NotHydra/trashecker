@@ -146,3 +146,71 @@ binTrashRouter
             res.redirect("create?response=error&text=Data tidak lengkap");
         }
     });
+
+binTrashRouter
+    .route("/update")
+    .get(async (req, res) => {
+        const id = req.query.id;
+        const dataExist = await Bin.exists({ _id: id }).lean();
+
+        if (dataExist != null) {
+            const itemObject = await Bin.findOne({ _id: id }).select("name location").lean();
+
+            res.render("pages/update", {
+                headTitle,
+                navActive,
+                toastResponse: req.query.response,
+                toastTitle: req.query.response == "success" ? "Data Berhasil Diubah" : "Data Gagal Diubah",
+                toastText: req.query.text,
+                id,
+                detailedInputArray: [
+                    {
+                        id: 1,
+                        name: "name",
+                        display: "Nama",
+                        type: "text",
+                        value: itemObject.name,
+                        placeholder: "Input nama disini",
+                        enable: true,
+                    },
+                    {
+                        id: 2,
+                        name: "location",
+                        display: "Lokasi",
+                        type: "text",
+                        value: itemObject.location,
+                        placeholder: "Input lokasi disini",
+                        enable: true,
+                    },
+                ],
+            });
+        } else if (dataExist == null) {
+            res.redirect("./?response=error&text=Data tidak valid");
+        }
+    })
+    .post(async (req, res) => {
+        const id = req.query.id;
+        const dataExist = await Bin.exists({ _id: id }).lean();
+
+        if (dataExist != null) {
+            if (![req.body.name, req.body.location].includes(undefined)) {
+                try {
+                    await Bin.updateOne(
+                        { _id: id },
+                        {
+                            name: req.body.name,
+                            location: req.body.location,
+                            updatedAt: new Date(),
+                        }
+                    ).lean();
+                    res.redirect(`update?id=${id}&response=success`);
+                } catch (error: any) {
+                    res.redirect(`update?id=${id}&response=error`);
+                }
+            } else {
+                res.redirect(`update?id=${id}&response=error&text=Data tidak lengkap`);
+            }
+        } else if (dataExist == null) {
+            res.redirect("./?response=error&text=Data tidak valid");
+        }
+    });
