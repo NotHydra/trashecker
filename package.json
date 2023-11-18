@@ -1,8 +1,8 @@
 {
-  "name": "trasheck",
+  "name": "trashecker",
   "version": "1.0.0",
   "main": "source/index.ts",
-  "repository": "https://github.com/NotHydra/trasheck.git",
+  "repository": "https://github.com/NotHydra/trashecker.git",
   "author": "NotHydra <rizky.irswanda115@gmail.com>",
   "license": "MIT",
   "scripts": {
