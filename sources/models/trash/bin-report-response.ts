@@ -1,27 +1,20 @@
 import mongoose from "mongoose";
 
-export const trashBinSchema = new mongoose.Schema({
+export const binReportResponseSchema = new mongoose.Schema({
     _id: {
         type: Number,
         required: true,
     },
-    name: {
-        type: String,
+    idTrashBinReport: {
+        type: Number,
         required: true,
+        ref: "trash-bin-report",
     },
-    location: {
+    message: {
         type: String,
-        required: true,
-    },
-    status: {
-        type: Boolean,
         required: true,
     },
     createdAt: {
-        type: Date,
-        required: true,
-    },
-    updatedAt: {
         type: Date,
         required: true,
     },

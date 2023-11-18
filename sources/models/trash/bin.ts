@@ -1,20 +1,27 @@
 import mongoose from "mongoose";
 
-export const trashBinActivitySchema = new mongoose.Schema({
+export const binSchema = new mongoose.Schema({
     _id: {
         type: Number,
         required: true,
     },
-    idTrashBin: {
-        type: Number,
+    name: {
+        type: String,
         required: true,
-        ref: "trash-bin",
+    },
+    location: {
+        type: String,
+        required: true,
     },
     status: {
         type: Boolean,
         required: true,
     },
     createdAt: {
+        type: Date,
+        required: true,
+    },
+    updatedAt: {
         type: Date,
         required: true,
     },

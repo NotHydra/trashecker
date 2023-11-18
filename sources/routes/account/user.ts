@@ -7,7 +7,6 @@ import { headTitle } from ".";
 import { UserActivity, User } from "../../models";
 import { localMoment, upperCaseFirst } from "../../utility";
 import { roleCheck, roleConvert } from "../../authentication/guard/role.guard";
-import { DEFAULT_MAX_VERSION } from "tls";
 
 export const accountUserRouter = Router();
 

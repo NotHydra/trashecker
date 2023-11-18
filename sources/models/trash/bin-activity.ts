@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const trashBinReportSchema = new mongoose.Schema({
+export const binActivitySchema = new mongoose.Schema({
     _id: {
         type: Number,
         required: true,
@@ -10,20 +10,8 @@ export const trashBinReportSchema = new mongoose.Schema({
         required: true,
         ref: "trash-bin",
     },
-    identification: {
-        type: String,
-        required: true,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    message: {
-        type: String,
-        required: true,
-    },
     status: {
-        type: Number,
+        type: Boolean,
         required: true,
     },
     createdAt: {
