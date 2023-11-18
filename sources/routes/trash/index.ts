@@ -4,8 +4,7 @@ import { blueColorPattern, datasetYear } from "../../utility";
 import { roleGuard } from "../../authentication/guard/role.guard";
 
 import { Bin } from "../../models";
-
-// import { homeProfileRouter } from "./profile";
+import { binTrashRouter } from "./bin";
 
 export const trashRouter = Router();
 export const headTitle = "Sampah";
@@ -103,4 +102,4 @@ trashRouter.get("/", async (req, res) => {
     });
 });
 
-// trashRouter.use("/profile", homeProfileRouter);
+trashRouter.use("/bin", binTrashRouter);

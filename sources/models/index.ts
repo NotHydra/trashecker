@@ -13,7 +13,7 @@ export const User = accountDatabase.model("user", userSchema, "user");
 export const UserActivity = accountDatabase.model("activity", userActivitySchema, "activity");
 
 const trashDatabase = mongoose.connection.useDb("trash");
-export const Bin = accountDatabase.model("bin", binSchema, "bin");
-export const BinActivity = accountDatabase.model("bin-activity", binActivitySchema, "bin-activity");
-export const BinReport = accountDatabase.model("bin-report", binReportSchema, "bin-report");
-export const BinReportResponse = accountDatabase.model("bin-report-response", binReportResponseSchema, "bin-report-response");
+export const Bin = trashDatabase.model("bin", binSchema, "bin");
+export const BinActivity = trashDatabase.model("bin-activity", binActivitySchema, "bin-activity");
+export const BinReport = trashDatabase.model("bin-report", binReportSchema, "bin-report");
+export const BinReportResponse = trashDatabase.model("bin-report-response", binReportResponseSchema, "bin-report-response");

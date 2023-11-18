@@ -5,10 +5,10 @@ export const binReportSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    idTrashBin: {
+    idBin: {
         type: Number,
         required: true,
-        ref: "trash-bin",
+        ref: "bin",
     },
     identification: {
         type: String,
