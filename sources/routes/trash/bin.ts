@@ -93,3 +93,56 @@ binTrashRouter.route("/").get(async (req, res) => {
         tableItemArray: tableItemArray,
     });
 });
+
+binTrashRouter
+    .route("/create")
+    .get(async (req, res) => {
+        res.render("pages/create", {
+            headTitle,
+            navActive,
+            toastResponse: req.query.response,
+            toastTitle: req.query.response == "success" ? "Data Berhasil Dibuat" : "Data Gagal Dibuat",
+            toastText: req.query.text,
+            detailedInputArray: [
+                {
+                    id: 1,
+                    name: "name",
+                    display: "Nama",
+                    type: "text",
+                    value: null,
+                    placeholder: "Input nama disini",
+                    enable: true,
+                },
+                {
+                    id: 2,
+                    name: "location",
+                    display: "Lokasi",
+                    type: "text",
+                    value: null,
+                    placeholder: "Input lokasi disini",
+                    enable: true,
+                },
+            ],
+        });
+    })
+    .post(async (req, res) => {
+        if (![req.body.name, req.body.location].includes(undefined)) {
+            const itemObject = new Bin({
+                _id: (await Bin.findOne().select("_id").sort({ _id: -1 }).lean())?._id + 1 || 1,
+                name: req.body.name,
+                location: req.body.location,
+                status: false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+
+            try {
+                await itemObject.save();
+                res.redirect("create?response=success");
+            } catch (error: any) {
+                res.redirect("create?response=error");
+            }
+        } else {
+            res.redirect("create?response=error&text=Data tidak lengkap");
+        }
+    });
