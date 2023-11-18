@@ -72,7 +72,7 @@ accountActivityRouter.route("/").get(async (req, res) => {
                 cardItemChild: [
                     {
                         id: 1,
-                        title: "Dibuat",
+                        title: "Terakhir Dibuat",
                         icon: "circle-plus",
                         value:
                             documentCount >= 1
