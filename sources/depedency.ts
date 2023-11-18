@@ -82,31 +82,7 @@ export const pageItemArray: pageItemType[] = [
                 icon: "dumpster",
                 level: 1,
                 confirm: false,
-            },
-            {
-                id: 3,
-                title: "Aktivitas",
-                link: "trash/bin-activity",
-                icon: "eye",
-                level: 1,
-                confirm: false,
-            },
-            {
-                id: 4,
-                title: "Laporan",
-                link: "trash/bin-report",
-                icon: "clipboard",
-                level: 1,
-                confirm: false,
-            },
-            {
-                id: 5,
-                title: "Respon",
-                link: "trash/bin-report-respon",
-                icon: "pen-nib",
-                level: 1,
-                confirm: false,
-            },
+            }
         ],
     },
     {

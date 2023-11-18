@@ -1,12 +1,10 @@
 import express, { Router } from "express";
-import bcrypt from "bcrypt";
 
-import { app } from "../../..";
 import { headTitle } from "..";
 
 import { Bin, BinActivity, BinReport } from "../../../models";
 import { localMoment, upperCaseFirst } from "../../../utility";
-import { roleCheck, roleConvert } from "../../../authentication/guard/role.guard";
+import { reportBinTrashRouter } from "./report";
 
 const navActive = [3, 2];
 export const binTrashRouter = Router();
@@ -312,3 +310,5 @@ binTrashRouter
             res.redirect("./?response=error&text=Data tidak valid");
         }
     });
+
+binTrashRouter.use("/report", reportBinTrashRouter);
