@@ -1,4 +1,5 @@
 import express, { Router } from "express";
+import cron from "node-cron";
 
 import { headTitle } from "..";
 
@@ -312,3 +313,14 @@ binTrashRouter
     });
 
 binTrashRouter.use("/report", reportBinTrashRouter);
+
+cron.schedule("0 21 * * *", async () => {
+    const BinArray = await Bin.find().select({ _id: true, status: true }).lean();
+
+    const idBinActivity = (await BinActivity.findOne().select({ _id: true }).sort({ _id: -1 }).lean())._id;
+    BinActivity.insertMany(
+        BinArray.map((binObject, binIndex) => {
+            return { _id: idBinActivity + binIndex, idBin: binObject._id, status: binObject.status, createdAt: new Date() };
+        })
+    );
+});
