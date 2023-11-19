@@ -26,7 +26,7 @@
                             <div class="col-12">
                                 <div class="card py-2">
                                     <div class="card-body pt-0 pb-3">
-                                        <%- include(`${viewPath}/partials/form-head.ejs`, {extraTitle: "Buat"}); -%>
+                                        <%- include(`${viewPath}/partials/form-head.ejs`, {extraTitle: "Tanggapan"}); -%>
 
                                         <form action="/<%= pageItemCurrent.link %>/report/response/create?idBin=<%= idBin %>&id=<%= idBinReport %>" method="POST" onsubmit="return confirmModal('form', this);">
                                             <%- include(`${viewPath}/partials/input-detailed.ejs`, {detailedInputArray}); -%>

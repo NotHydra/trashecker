@@ -257,8 +257,6 @@ accountUserRouter
             attributeArray.password = req.body.password;
             inputArray.push(req.body.password);
 
-            console.log(inputArray);
-
             if (!inputArray.includes(undefined)) {
                 attributeArray.password = await bcrypt.hash(attributeArray.password, 12);
 
