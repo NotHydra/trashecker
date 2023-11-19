@@ -17,6 +17,8 @@ import { authenticationRouter } from "./authentication";
 import { homeRouter } from "./routes/home";
 import { accountRouter } from "./routes/account";
 import { trashRouter } from "./routes/trash";
+import { Bin, BinReport, BinReportResponse } from "./models";
+import { laporanRouter } from "./routes/laporan";
 
 declare module "express-session" {
     interface Session {
@@ -51,6 +53,7 @@ app.use(
 );
 
 app.use(authenticationRouter);
+app.use("/laporan", laporanRouter);
 
 app.use(isAuthenticated);
 app.use(isActive);
