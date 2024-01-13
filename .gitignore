@@ -1,12 +1,2 @@
-/.VSCodeCounter
-/dist
-/node_modules
-/pkg
-
-/scripts/json/**/*.json
-
-/sources/public/dist
-/sources/public/plugins
-
-/.env
-/note.txt
+.vscode
+build
