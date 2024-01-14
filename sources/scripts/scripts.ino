@@ -6,6 +6,7 @@
 
 const char *wifiSSID = "SSID";
 const char *wifiPassword = "PASSWORD";
+
 const String server = "signature-api.irswanda.com";
 
 const int sensorTriggerPin = 12;
