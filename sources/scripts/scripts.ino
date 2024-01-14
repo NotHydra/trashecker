@@ -4,8 +4,8 @@
 
 #define SOUND_VELOCITY 0.034
 
-const char *wifiSSID = "SSID";
-const char *wifiPassword = "PASSWORD";
+const char *wifiSSID = "Mayoriz_4G";
+const char *wifiPassword = "1rsw4nd4";
 
 const String server = "signature-api.irswanda.com";
 
