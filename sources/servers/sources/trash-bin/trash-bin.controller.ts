@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Put } from '@nestjs/common';
-import { TrashBinService } from 'trash-bin/trash-bin.service';
+import { TrashBinService } from './trash-bin.service';
 
 @Controller('trash-bin')
 export class TrashBinController {
