@@ -1,37 +1,59 @@
-const int sensorTriggerPin = 9;
-const int sensorEchoPin = 10;
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClientSecure.h>
 
-const int ledGreenPin = 11;
-const int ledRedPin = 6;
-
-float duration, distance;  
+const char *WIFI_SSID = "SSID";
+const char *WIFI_PASSWORD = "PASSWORD";
+const String SERVER = "signature-api.irswanda.com";
 
 void setup()
 {
-	pinMode(sensorTriggerPin, OUTPUT);  
-	pinMode(sensorEchoPin, INPUT);  
-	Serial.begin(9600);  
+	Serial.begin(115200);
+	delay(500);
 
+	WiFi.mode(WIFI_STA);
+	WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+	Serial.print("Connecting To SSID: " + String(WIFI_SSID));
+	while (WiFi.status() != WL_CONNECTED)
+	{
+		delay(500);
+		Serial.print(".");
+	}
+
+	Serial.println("");
+	Serial.print("Connected To IP Addrerss: ");
+	Serial.println(WiFi.localIP());
 }
 
 void loop()
 {
-	digitalWrite(sensorTriggerPin, LOW);  
-	delayMicroseconds(2);  
-	digitalWrite(sensorTriggerPin, HIGH);  
-	delayMicroseconds(10);  
-	digitalWrite(sensorTriggerPin, LOW);  
+	if (WiFi.status() == WL_CONNECTED)
+	{
+		WiFiClientSecure client;
+		client.setInsecure();
 
-	duration = pulseIn(sensorEchoPin, HIGH); 
-	distance = (duration*0.0343)/2;  
+		HTTPClient https;
+		String target = "https://" + SERVER + "/api/user";
+		Serial.println("Requesting " + target);
 
-	if (distance < 10) {
-		analogWrite(ledGreenPin, LOW);
-		analogWrite(ledRedPin, HIGH);
-	} else {
-		analogWrite(ledGreenPin, HIGH);
-		analogWrite(ledRedPin, LOW);
-	};
+		if (https.begin(client, target))
+		{
+			int httpCode = https.GET();
+			Serial.println("============== Response code: " + String(httpCode));
 
-	delay(100);
+			if (httpCode > 0)
+			{
+				Serial.println(https.getString());
+			}
+
+			https.end();
+		}
+		else
+		{
+			Serial.printf("[HTTPS] Unable to connect\n");
+		}
+	}
+
+	delay(5000);
 }
