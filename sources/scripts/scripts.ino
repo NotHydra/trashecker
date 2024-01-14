@@ -7,7 +7,7 @@
 const char *wifiSSID = "Mayoriz_4G";
 const char *wifiPassword = "1rsw4nd4";
 
-const String server = "signature-api.irswanda.com";
+const String server = "https://trashecker.irswanda.com";
 
 const int sensorTriggerPin = 12;
 const int sensorEchoPin = 14;
@@ -37,46 +37,42 @@ void setup()
 
 void loop()
 {
-	digitalWrite(sensorTriggerPin, LOW);
-	delayMicroseconds(2);
-	digitalWrite(sensorTriggerPin, HIGH);
-	delayMicroseconds(10);
-	digitalWrite(sensorTriggerPin, LOW);
+	if (WiFi.status() == WL_CONNECTED)
+	{
+		WiFiClientSecure client;
+		client.setInsecure();
 
-	duration = pulseIn(sensorEchoPin, HIGH);
-	distance = duration * SOUND_VELOCITY / 2;
+		HTTPClient https;
+		const String target = server + "/trash-bin/full";
 
-	// if (WiFi.status() == WL_CONNECTED)
-	// {
-	// 	WiFiClientSecure client;
-	// 	client.setInsecure();
+		logLoop("Requesting At: " + target);
+		https.begin(client, target);
+		https.addHeader("Content-Type", "application/json");
+		
+		digitalWrite(sensorTriggerPin, LOW);
+		delayMicroseconds(2);
+		digitalWrite(sensorTriggerPin, HIGH);
+		delayMicroseconds(10);
+		digitalWrite(sensorTriggerPin, LOW);
 
-	// 	HTTPClient https;
-	// 	const String target = "https://" + server + "/api/user";
-	// 	logLoop("Requesting At: " + target);
+		distance = (pulseIn(sensorEchoPin, HIGH) * SOUND_VELOCITY) / 2;
 
-	// 	if (https.begin(client, target))
-	// 	{
-	// 		logLoop("Response Code: " + String(https.GET()));
+		int httpResponseCode = https.PUT("{\"full\": " + String((distance < 10) ? "true" : "false") + "}");
 
-	// 		https.end();
-	// 	}
-	// 	else
-	// 	{
-	// 		logLoop("Unable To Connect");
-	// 	};
-	// };
+		logLoop("Response Code: " + String(httpResponseCode));
+		if (httpResponseCode > 0)
+		{
+			logLoop("Result: " + https.getString());
+		}
+		else
+		{
+			logLoop("Failed To Make A Request");
+		};
 
-	if (distance < 10) {
-		logLoop("Status: Full");
-	} else {
-		logLoop("Status: Empty");
-	}
+		https.end();
+	};
 
-
-	logLoop("Distance: " + String(distance));
 	Serial.println();
-
 	delay(1000);
 };
 
