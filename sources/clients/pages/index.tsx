@@ -43,7 +43,7 @@ const IndexPage = (): JSX.Element => {
                 <h1>Trash<span>ecker</span></h1>
                 <p>In collaboration with <span>Informatika</span> x <span>Desain Komunikasi Visual</span></p>
                 <h6>Trash <span>Checker</span> status is currently:</h6>
-                <button>{data ? (data.full === true ? "Full" : "Empty") : "Empty"}</button>
+                <button style={{backgroundColor: (data ? (data.full === true ? "#D22B2B" : "#FED307" ) : "#FED307")}}>{data ? (data.full === true ? "Full" : "Empty") : "Empty"}</button>
             </div>
 
             <div className="home-img">

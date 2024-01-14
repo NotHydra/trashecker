@@ -98,7 +98,6 @@ section {
 }
 
 .home-text button {
-    background: var(--main-color);
     color: var(--second-main-color);
     width: 400px;
     font-size: 1.5rem;
