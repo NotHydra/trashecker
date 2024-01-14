@@ -2,14 +2,25 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 
+#define SOUND_VELOCITY 0.034
+
 const char *wifiSSID = "SSID";
 const char *wifiPassword = "PASSWORD";
 const String server = "signature-api.irswanda.com";
+
+const int sensorTriggerPin = 12;
+const int sensorEchoPin = 14;
+
+long duration;
+float distance;
 
 void setup()
 {
 	Serial.begin(115200);
 	delay(1000);
+
+	pinMode(sensorTriggerPin, OUTPUT);
+  	pinMode(sensorEchoPin, INPUT);
 
 	WiFi.mode(WIFI_STA);
 	WiFi.begin(wifiSSID, wifiPassword);
@@ -25,26 +36,37 @@ void setup()
 
 void loop()
 {
-	if (WiFi.status() == WL_CONNECTED)
-	{
-		WiFiClientSecure client;
-		client.setInsecure();
+	digitalWrite(sensorTriggerPin, LOW);
+	delayMicroseconds(2);
+	digitalWrite(sensorTriggerPin, HIGH);
+	delayMicroseconds(10);
+	digitalWrite(sensorTriggerPin, LOW);
 
-		HTTPClient https;
-		const String target = "https://" + server + "/api/user";
-		logLoop("Requesting At: " + target);
+	duration = pulseIn(sensorEchoPin, HIGH);
+	distance = duration * SOUND_VELOCITY / 2;
 
-		if (https.begin(client, target))
-		{
-			logLoop("Response Code: " + String(https.GET()));
+	// if (WiFi.status() == WL_CONNECTED)
+	// {
+	// 	WiFiClientSecure client;
+	// 	client.setInsecure();
 
-			https.end();
-		}
-		else
-		{
-			logLoop("Unable To Connect");
-		};
-	};
+	// 	HTTPClient https;
+	// 	const String target = "https://" + server + "/api/user";
+	// 	logLoop("Requesting At: " + target);
+
+	// 	if (https.begin(client, target))
+	// 	{
+	// 		logLoop("Response Code: " + String(https.GET()));
+
+	// 		https.end();
+	// 	}
+	// 	else
+	// 	{
+	// 		logLoop("Unable To Connect");
+	// 	};
+	// };
+
+	logLoop("Distance: " + String(distance));
 
 	delay(5000);
 };
