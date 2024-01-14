@@ -67,9 +67,17 @@ void loop()
 	// 	};
 	// };
 
-	logLoop("Distance: " + String(distance));
+	if (distance < 10) {
+		logLoop("Status: Full");
+	} else {
+		logLoop("Status: Empty");
+	}
 
-	delay(5000);
+
+	logLoop("Distance: " + String(distance));
+	Serial.println();
+
+	delay(1000);
 };
 
 void logSetup(String text) {
