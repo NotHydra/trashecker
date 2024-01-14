@@ -7,7 +7,7 @@
 const char *wifiSSID = "Mayoriz_4G";
 const char *wifiPassword = "1rsw4nd4";
 
-const String server = "https://trashecker.irswanda.com";
+const String server = "https://trashecker-api.irswanda.com";
 
 const int sensorTriggerPin = 12;
 const int sensorEchoPin = 14;
@@ -40,7 +40,7 @@ void loop()
 		client.setInsecure();
 
 		HTTPClient request;
-		const String url = server + "/trash-bin/full";
+		const String url = server + "/api/trash-bin/full";
 
 		logLoop("Requesting At: " + url);
 		request.begin(client, url);

@@ -6,7 +6,7 @@ const IndexPage = (): JSX.Element => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const request = await fetch("https://trashecker.irswanda.com/trash-bin");
+                const request = await fetch("https://trashecker-api.irswanda.com/api/trash-bin");
                 const response = await request.json();
 
                 setData(response);
