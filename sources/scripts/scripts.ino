@@ -12,9 +12,6 @@ const String server = "https://trashecker.irswanda.com";
 const int sensorTriggerPin = 12;
 const int sensorEchoPin = 14;
 
-long duration;
-float distance;
-
 void setup()
 {
 	Serial.begin(115200);
@@ -42,12 +39,12 @@ void loop()
 		WiFiClientSecure client;
 		client.setInsecure();
 
-		HTTPClient https;
-		const String target = server + "/trash-bin/full";
+		HTTPClient request;
+		const String url = server + "/trash-bin/full";
 
-		logLoop("Requesting At: " + target);
-		https.begin(client, target);
-		https.addHeader("Content-Type", "application/json");
+		logLoop("Requesting At: " + url);
+		request.begin(client, url);
+		request.addHeader("Content-Type", "application/json");
 		
 		digitalWrite(sensorTriggerPin, LOW);
 		delayMicroseconds(2);
@@ -55,25 +52,23 @@ void loop()
 		delayMicroseconds(10);
 		digitalWrite(sensorTriggerPin, LOW);
 
-		distance = (pulseIn(sensorEchoPin, HIGH) * SOUND_VELOCITY) / 2;
+		const int responseCode = request.PUT("{\"full\": " + String((((pulseIn(sensorEchoPin, HIGH) * SOUND_VELOCITY) / 2) < 10) ? "true" : "false") + "}");
 
-		int httpResponseCode = https.PUT("{\"full\": " + String((distance < 10) ? "true" : "false") + "}");
-
-		logLoop("Response Code: " + String(httpResponseCode));
-		if (httpResponseCode > 0)
+		logLoop("Response Code: " + String(responseCode));
+		if (responseCode > 0)
 		{
-			logLoop("Result: " + https.getString());
+			logLoop("Result: " + request.getString());
 		}
 		else
 		{
 			logLoop("Failed To Make A Request");
 		};
 
-		https.end();
+		request.end();
 	};
 
 	Serial.println();
-	delay(1000);
+	delay(500);
 };
 
 void logSetup(String text) {
