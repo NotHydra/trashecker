@@ -2,29 +2,26 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 
-const char *WIFI_SSID = "SSID";
-const char *WIFI_PASSWORD = "PASSWORD";
-const String SERVER = "signature-api.irswanda.com";
+const char *wifiSSID = "SSID";
+const char *wifiPassword = "PASSWORD";
+const String server = "signature-api.irswanda.com";
 
 void setup()
 {
 	Serial.begin(115200);
-	delay(500);
+	delay(1000);
 
 	WiFi.mode(WIFI_STA);
-	WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+	WiFi.begin(wifiSSID, wifiPassword);
 
-	Serial.print("Connecting To SSID: " + String(WIFI_SSID));
+	logSetup("Connecting To SSID: " + String(wifiSSID));
 	while (WiFi.status() != WL_CONNECTED)
 	{
 		delay(500);
-		Serial.print(".");
-	}
+	};
 
-	Serial.println("");
-	Serial.print("Connected To IP Addrerss: ");
-	Serial.println(WiFi.localIP());
-}
+	logSetup("Connected To IP Address: " + String(WiFi.localIP().toString().c_str()));
+};
 
 void loop()
 {
@@ -34,26 +31,28 @@ void loop()
 		client.setInsecure();
 
 		HTTPClient https;
-		String target = "https://" + SERVER + "/api/user";
-		Serial.println("Requesting " + target);
+		const String target = "https://" + server + "/api/user";
+		logLoop("Requesting At: " + target);
 
 		if (https.begin(client, target))
 		{
-			int httpCode = https.GET();
-			Serial.println("============== Response code: " + String(httpCode));
-
-			if (httpCode > 0)
-			{
-				Serial.println(https.getString());
-			}
+			logLoop("Response Code: " + String(https.GET()));
 
 			https.end();
 		}
 		else
 		{
-			Serial.printf("[HTTPS] Unable to connect\n");
-		}
-	}
+			logLoop("Unable To Connect");
+		};
+	};
 
 	delay(5000);
-}
+};
+
+void logSetup(String text) {
+	Serial.println("[setup] " + text);
+};
+
+void logLoop(String text) {
+	Serial.println("[loop] " + text);
+};
