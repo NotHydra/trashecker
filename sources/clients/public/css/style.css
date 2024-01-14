@@ -16,7 +16,7 @@
     --text-color: #FFFFFF;
     --big-font: 3.8rem;
     --h2-font: 1.9rem;
-    --p-font: 1rem;
+    --p-font: 0.9rem;
 }
 
 body {
@@ -76,14 +76,8 @@ section {
     color: var(--text-color);
     font-weight: 700;
     line-height: 1;
-    margin: 0 0 20px;
-}
-
-.home-text h6 {
-    color: var(--text-color);
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 25px;
+    margin: 0;
+    padding: 0;
 }
 
 .home-text p {
@@ -93,7 +87,28 @@ section {
     line-height: 1.4rem;
     margin-bottom: 1rem;
     color: var(--second-main-color);
+    text-wrap: nowrap;
 }
+
+.home-text h6 {
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.home-text button {
+    background: var(--main-color);
+    color: var(--second-main-color);
+    width: 400px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 10px 0px;
+    border-radius: 5px;
+    border: none;
+    cursor: default;
+}
+
 
 @media (max-width: 1430px) {
     section {

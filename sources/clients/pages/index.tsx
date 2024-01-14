@@ -32,7 +32,6 @@ const IndexPage = (): JSX.Element => {
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
         <link rel="stylesheet" href="css/style.css" />
-        <link rel="stylesheet" href="css/swiper-bundle.min.css" />
 
         <link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
         <title>Trashecker | Home</title>
@@ -42,8 +41,9 @@ const IndexPage = (): JSX.Element => {
         <section className="home" id="home">
             <div className="home-text">
                 <h1>Trash<span>ecker</span></h1>
-                <h6>Trash <span>Checker</span> status is currently <span>{data ? (data.full === true ? "Full" : "Empty") : "Empty"}</span></h6>
                 <p>In collaboration with <span>Informatika</span> x <span>Desain Komunikasi Visual</span></p>
+                <h6>Trash <span>Checker</span> status is currently:</h6>
+                <button>{data ? (data.full === true ? "Full" : "Empty") : "Empty"}</button>
             </div>
 
             <div className="home-img">
