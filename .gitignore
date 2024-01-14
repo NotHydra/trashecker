@@ -38,3 +38,4 @@ lerna-debug.log*
 sources/scripts/build
 
 note.txt
+.env
