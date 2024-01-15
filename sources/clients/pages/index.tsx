@@ -1,57 +1,110 @@
+import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
 const IndexPage = (): JSX.Element => {
-  const [data, setData] = useState<any>(null);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const request = await fetch("https://trashecker-api.irswanda.com/api/trash-bin");
-                const response = await request.json();
+	const [trashBinPercentage, setTrashBinPercetange] = useState<number>(0);
+	const [trashBinText, setTrashBinText] = useState<string>("Empty");
+	const [trashBinColor, setTrashBinColor] = useState<string>("#33FF66");
 
-                setData(response);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+	useEffect(() => {
+		const getPercentage = async (): Promise<void> => {
+			try {
+				const response: AxiosResponse<TrashBinInterface[]> = await axios<TrashBinInterface[]>({
+					method: "GET",
+					url: "https://trashecker-api.irswanda.com/api/trash-bin",
+					headers: {
+						"Content-Type": "application/json",
+					}
+				});
 
-        const intervalId = setInterval(fetchData, 500);
+				const trashBin: TrashBinInterface = response.data[0];
 
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, []);
+				const rawPercentage: number = Math.round(((trashBin.maxCapacity - trashBin.currentCapacity) / trashBin.maxCapacity) * 100) * 2.75;
+				const percentage: number = (rawPercentage < 0) ? 0 : rawPercentage;
+				const { text, color }: { text: string, color: string } = convertPercentage(percentage);
 
-  return (<>
-    <Head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				console.log(trashBin.maxCapacity, trashBin.currentCapacity, percentage)
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+				setTrashBinPercetange(percentage);
+				setTrashBinText(text);
+				setTrashBinColor(color);
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			}
+		};
 
-        <link rel="stylesheet" href="css/style.css" />
+		const intervalId: NodeJS.Timeout = setInterval(getPercentage, 5000);
 
-        <link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
-        <title>Trashecker | Home</title>
-    </Head>
+		return () => {
+			clearInterval(intervalId);
+		};
+	}, []);
 
-    <>
-        <section className="home" id="home">
-            <div className="home-text">
-                <h1>Trash<span>ecker</span></h1>
-                <p>In collaboration with <span>Informatics</span> x <span>Visual Communication Design</span></p>
-                <h6>Trash <span>Checker</span> status is currently:</h6>
-                <button style={{backgroundColor: (data ? (data.full === true ? "#D22B2B" : "#FED307" ) : "#FED307")}}>{data ? (data.full === true ? "Full" : "Empty") : "Empty"}</button>
-            </div>
+	const convertPercentage = (percentage: number): { text: string, color: string } => {
+		if (0 <= percentage && percentage <= 20) {
+			return {
+				text: "Empty",
+				color: "#33FF66"
+			};
+		} else if (20 < percentage && percentage <= 40) {
+			return {
+				text: "Almost Empty",
+				color: "#CCFF66"
+			};
+		} else if (40 < percentage && percentage <= 60) {
+			return {
+				text: "Half Full",
+				color: "#FFCC33"
+			};
+		} else if (60 < percentage && percentage <= 80) {
+			return {
+				text: "Almost Full",
+				color: "#FF9900"
+			};
+		} else if (80 < percentage && percentage <= 100) {
+			return {
+				text: "Full",
+				color: "#FF6600"
+			};
+		} else if (percentage > 100) {
+			return {
+				text: "Overloaded!!!",
+				color: "#FF0000"
+			};
+		}
+	};
 
-            <div className="home-img">
-                <img src="img/profile.png" alt="Profile" />
-            </div>
-        </section>
-    </>
-  </>)
+	return (<>
+		<Head>
+			<meta charSet="UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+			<link rel="preconnect" href="https://fonts.googleapis.com" />
+			<link rel="preconnect" href="https://fonts.gstatic.com" />
+			<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+			<link rel="stylesheet" href="css/style.css" />
+
+			<link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
+			<title>Trashecker | Home</title>
+		</Head>
+
+		<>
+			<section className="home" id="home">
+				<div className="home-text">
+					<h1>Trash<span>ecker</span></h1>
+					<p>In collaboration with <span>Informatics</span> x <span>Visual Communication Design</span></p>
+					<h6>Trash <span>Checker</span> status is currently:</h6>
+					<button style={{ backgroundColor: trashBinColor }}>{trashBinText} - {trashBinPercentage}%</button>
+				</div>
+
+				<div className="home-img">
+					<img src="img/profile.png" alt="Profile" />
+				</div>
+			</section>
+		</>
+	</>)
 };
 
 export default IndexPage;
