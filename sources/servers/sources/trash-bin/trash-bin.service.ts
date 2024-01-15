@@ -22,15 +22,21 @@ export class TrashBinService {
     return this.trashBins.find(
       (trashBin: TrashBinInterface): TrashBinDTOInterface => {
         if (trashBin.id === id) {
-          if (trashBinDTO.name !== null) {
+          if (trashBinDTO.name !== null && trashBinDTO.name !== undefined) {
             trashBin.name = trashBinDTO.name;
           }
 
-          if (trashBinDTO.maxCapacity !== null) {
+          if (
+            trashBinDTO.maxCapacity !== null &&
+            trashBinDTO.maxCapacity !== undefined
+          ) {
             trashBin.maxCapacity = trashBinDTO.maxCapacity;
           }
 
-          if (trashBinDTO.currentCapacity !== null) {
+          if (
+            trashBinDTO.currentCapacity !== null &&
+            trashBinDTO.currentCapacity !== undefined
+          ) {
             trashBin.currentCapacity = trashBinDTO.currentCapacity;
           }
 
