@@ -8,9 +8,13 @@ const char *wifiSSID = "Mayoriz_4G";
 const char *wifiPassword = "1rsw4nd4";
 
 const String server = "https://trashecker-api.irswanda.com";
+const int trashBinId = 1;
+const String url = server + "/api/trash-bin/" + String(trashBinId);
 
 const int sensorTriggerPin = 12;
 const int sensorEchoPin = 14;
+
+float maxCapacity;
 
 void setup()
 {
@@ -30,6 +34,8 @@ void setup()
 	};
 
 	logSetup("Connected To IP Address: " + String(WiFi.localIP().toString().c_str()));
+
+	calibrate();
 };
 
 void loop()
@@ -40,28 +46,23 @@ void loop()
 		client.setInsecure();
 
 		HTTPClient request;
-		const String url = server + "/api/trash-bin/full";
 
-		logLoop("Requesting At: " + url);
+		logLoop("Updating At: " + url);
 		request.begin(client, url);
 		request.addHeader("Content-Type", "application/json");
 		
-		digitalWrite(sensorTriggerPin, LOW);
-		delayMicroseconds(2);
-		digitalWrite(sensorTriggerPin, HIGH);
-		delayMicroseconds(10);
-		digitalWrite(sensorTriggerPin, LOW);
+		activateSensor();
 
-		const int responseCode = request.PUT("{\"full\": " + String((((pulseIn(sensorEchoPin, HIGH) * SOUND_VELOCITY) / 2) < 10) ? "true" : "false") + "}");
+		const int responseCode = request.PUT("{\"currentCapacity\": " + String(getSensorLength()) + "}");
 
-		logLoop("Response Code: " + String(responseCode));
+		logLoop("Updating Response: " + String(responseCode));
 		if (responseCode > 0)
 		{
-			logLoop("Result: " + request.getString());
+			logLoop("Updating Result: " + request.getString());
 		}
 		else
 		{
-			logLoop("Failed To Make A Request");
+			logLoop("Failed To Update");
 		};
 
 		request.end();
@@ -78,3 +79,44 @@ void logSetup(String text) {
 void logLoop(String text) {
 	Serial.println("[loop] " + text);
 };
+
+void activateSensor() {
+	digitalWrite(sensorTriggerPin, LOW);
+	delayMicroseconds(2);
+	digitalWrite(sensorTriggerPin, HIGH);
+	delayMicroseconds(10);
+	digitalWrite(sensorTriggerPin, LOW);
+};
+
+float getSensorLength() {
+	return (pulseIn(sensorEchoPin, HIGH) * SOUND_VELOCITY / 2);
+};
+
+void calibrate() {
+	WiFiClientSecure client;
+	client.setInsecure();
+
+	HTTPClient request;
+
+	logSetup("Calibrating At: " + url);
+	request.begin(client, url);
+	request.addHeader("Content-Type", "application/json");
+
+	activateSensor();
+
+	maxCapacity = getSensorLength();
+
+	const int responseCode = request.PUT("{\"maxCapacity\": " + String(maxCapacity) + ", \"currentCapacity\": 0}");
+
+	logSetup("Calibrating Response: " + String(responseCode));
+	if (responseCode > 0)
+	{
+		logSetup("Calibrating Result: " + request.getString());
+	}
+	else
+	{
+		logSetup("Failed To Calibrate");
+	};
+
+	request.end();
+}
