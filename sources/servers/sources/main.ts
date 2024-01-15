@@ -1,12 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
+import { INestApplication } from '@nestjs/common';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   dotenv.config();
 
-  const app = await NestFactory.create(AppModule);
-  const port = process.env.PORT || 3000;
+  const app: INestApplication =
+    await NestFactory.create<INestApplication>(AppModule);
+  const port: number = parseInt(process.env.PORT) || 3000;
 
   app.use(
     (
@@ -17,6 +19,7 @@ async function bootstrap() {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
       res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+
       next();
     },
   );
