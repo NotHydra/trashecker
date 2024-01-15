@@ -41,7 +41,7 @@ const IndexPage = (): JSX.Element => {
         <section className="home" id="home">
             <div className="home-text">
                 <h1>Trash<span>ecker</span></h1>
-                <p>In collaboration with <span>Informatika</span> x <span>Desain Komunikasi Visual</span></p>
+                <p>In collaboration with <span>Informatics</span> x <span>Visual Communication Design</span></p>
                 <h6>Trash <span>Checker</span> status is currently:</h6>
                 <button style={{backgroundColor: (data ? (data.full === true ? "#D22B2B" : "#FED307" ) : "#FED307")}}>{data ? (data.full === true ? "Full" : "Empty") : "Empty"}</button>
             </div>
