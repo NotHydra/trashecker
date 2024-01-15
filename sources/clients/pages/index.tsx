@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
+import TrashBinInterface from "../interfaces/trash-bin.interface";
+
 const IndexPage = (): JSX.Element => {
 	const [trashBinPercentage, setTrashBinPercetange] = useState<number>(0);
 	const [trashBinText, setTrashBinText] = useState<string>("Empty");
@@ -87,7 +89,7 @@ const IndexPage = (): JSX.Element => {
 			<link rel="stylesheet" href="css/style.css" />
 
 			<link rel="shortcut icon" href="img/icon.png" type="image/x-icon" />
-			<title>Trashecker | Home</title>
+			<title>Trashecker</title>
 		</Head>
 
 		<>
