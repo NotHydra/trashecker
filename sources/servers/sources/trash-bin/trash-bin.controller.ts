@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Put,
+} from '@nestjs/common';
 import { TrashBinService } from './trash-bin.service';
 
 @Controller('api/trash-bin')
@@ -12,9 +19,9 @@ export class TrashBinController {
 
   @Put(':id')
   public change(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() body: TrashBinDTOInterface,
   ): TrashBinInterface {
-    return this.service.changeFull(id, body);
+    return this.service.change(id, body);
   }
 }

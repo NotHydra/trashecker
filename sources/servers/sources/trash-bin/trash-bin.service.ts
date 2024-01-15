@@ -15,25 +15,30 @@ export class TrashBinService {
     return this.trashBins;
   }
 
-  public changeFull(id, trashBinDTO: TrashBinDTOInterface): TrashBinInterface {
-    this.trashBins.find((trashBin: TrashBinInterface) => {
-      if (trashBin.id === id) {
-        if (trashBinDTO.name !== null) {
-          trashBin.name = trashBinDTO.name;
+  public change(
+    id: number,
+    trashBinDTO: TrashBinDTOInterface,
+  ): TrashBinInterface {
+    return this.trashBins.find(
+      (trashBin: TrashBinInterface): TrashBinDTOInterface => {
+        if (trashBin.id === id) {
+          if (trashBinDTO.name !== null) {
+            trashBin.name = trashBinDTO.name;
+          }
+
+          if (trashBinDTO.maxCapacity !== null) {
+            trashBin.maxCapacity = trashBinDTO.maxCapacity;
+          }
+
+          if (trashBinDTO.currentCapacity !== null) {
+            trashBin.currentCapacity = trashBinDTO.currentCapacity;
+          }
+
+          console.log(trashBin);
+
+          return trashBin;
         }
-
-        if (trashBinDTO.maxCapacity !== null) {
-          trashBin.maxCapacity = trashBinDTO.maxCapacity;
-        }
-
-        if (trashBinDTO.currentCapacity !== null) {
-          trashBin.currentCapacity = trashBinDTO.currentCapacity;
-        }
-
-        return trashBin;
-      }
-    });
-
-    return null;
+      },
+    );
   }
 }
