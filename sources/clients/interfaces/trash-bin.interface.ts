@@ -1,6 +1,6 @@
 export default interface TrashBinInterface {
-  id: number;
-  name: string;
-  maxCapacity: number;
-  currentCapacity: number;
+    id: number;
+    name: string;
+    maxCapacity: number;
+    currentCapacity: number;
 }

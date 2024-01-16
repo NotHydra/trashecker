@@ -1,12 +1,12 @@
 interface TrashBinInterface {
-  id: number;
-  name: string;
-  maxCapacity: number;
-  currentCapacity: number;
+    id: number;
+    name: string;
+    maxCapacity: number;
+    currentCapacity: number;
 }
 
 interface TrashBinDTOInterface {
-  name: string;
-  maxCapacity: number;
-  currentCapacity: number;
+    name: string;
+    maxCapacity: number;
+    currentCapacity: number;
 }

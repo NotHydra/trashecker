@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "format": "prettier --write \"sources/**/*.ts\""
+    },
+    "dependencies": {
+        "prettier": "^3.2.2"
+    }
+}

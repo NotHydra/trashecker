@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { TrashBinModule } from './trash-bin/trash-bin.module';
+import { Module } from "@nestjs/common";
+import { TrashBinModule } from "./trash-bin/trash-bin.module";
 
 @Module({
-  imports: [TrashBinModule],
-  controllers: [],
-  providers: [],
+    imports: [TrashBinModule],
+    controllers: [],
+    providers: [],
 })
 export class AppModule {}
