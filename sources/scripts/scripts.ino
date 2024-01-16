@@ -42,30 +42,7 @@ void loop()
 {
 	if (WiFi.status() == WL_CONNECTED)
 	{
-		WiFiClientSecure client;
-		client.setInsecure();
-
-		HTTPClient request;
-
-		logLoop("Updating At: " + url);
-		request.begin(client, url);
-		request.addHeader("Content-Type", "application/json");
-		
-		activateSensor();
-
-		const int responseCode = request.PUT("{\"currentCapacity\": " + String(getSensorLength()) + "}");
-
-		logLoop("Updating Response: " + String(responseCode));
-		if (responseCode > 0)
-		{
-			logLoop("Updating Result: " + request.getString());
-		}
-		else
-		{
-			logLoop("Failed To Update");
-		};
-
-		request.end();
+		update();
 	};
 
 	Serial.println();
@@ -116,6 +93,33 @@ void calibrate() {
 	else
 	{
 		logSetup("Failed To Calibrate");
+	};
+
+	request.end();
+}
+
+void update() {
+	WiFiClientSecure client;
+	client.setInsecure();
+
+	HTTPClient request;
+
+	logLoop("Updating At: " + url);
+	request.begin(client, url);
+	request.addHeader("Content-Type", "application/json");
+	
+	activateSensor();
+
+	const int responseCode = request.PUT("{\"currentCapacity\": " + String(getSensorLength()) + "}");
+
+	logLoop("Updating Response: " + String(responseCode));
+	if (responseCode > 0)
+	{
+		logLoop("Updating Result: " + request.getString());
+	}
+	else
+	{
+		logLoop("Failed To Update");
 	};
 
 	request.end();
