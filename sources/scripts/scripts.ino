@@ -39,6 +39,7 @@ void setup()
 	logSetup("Connected To IP Address: " + String(WiFi.localIP().toString().c_str()));
 
 	calibrate();
+	Serial.println();
 };
 
 void loop()
@@ -110,8 +111,10 @@ void update()
 {
 	activateSensor();
 	const float currentCapacity = getSensorLength();
+	const boolean isValid = abs(previousCapacity - currentCapacity) < 2;
 
-	if (abs(previousCapacity - currentCapacity) < 2)
+	logLoop("Validate Capacity: " + String(previousCapacity) + " | " + String(currentCapacity) + " | " + (isValid ? "Valid" : "Invalid"));
+	if (isValid)
 	{
 		WiFiClientSecure client;
 		client.setInsecure();
