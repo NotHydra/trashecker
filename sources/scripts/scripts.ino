@@ -14,9 +14,10 @@ const String url = server + "/api/trash-bin/" + String(trashBinId);
 const int sensorTriggerPin = 12;
 const int sensorEchoPin = 14;
 
-const int updateDelay = 5000;
+const int updateDelay = 2500;
 
 float maxCapacity;
+float previousCapacity = 0;
 
 void setup()
 {
@@ -24,7 +25,7 @@ void setup()
 	delay(1000);
 
 	pinMode(sensorTriggerPin, OUTPUT);
-  	pinMode(sensorEchoPin, INPUT);
+	pinMode(sensorEchoPin, INPUT);
 
 	WiFi.mode(WIFI_STA);
 	WiFi.begin(wifiSSID, wifiPassword);
@@ -51,15 +52,18 @@ void loop()
 	delay(updateDelay);
 };
 
-void logSetup(String text) {
+void logSetup(String text)
+{
 	Serial.println("[setup] " + text);
 };
 
-void logLoop(String text) {
+void logLoop(String text)
+{
 	Serial.println("[loop] " + text);
 };
 
-void activateSensor() {
+void activateSensor()
+{
 	digitalWrite(sensorTriggerPin, LOW);
 	delayMicroseconds(2);
 	digitalWrite(sensorTriggerPin, HIGH);
@@ -67,11 +71,13 @@ void activateSensor() {
 	digitalWrite(sensorTriggerPin, LOW);
 };
 
-float getSensorLength() {
+float getSensorLength()
+{
 	return (pulseIn(sensorEchoPin, HIGH) * SOUND_VELOCITY / 2);
 };
 
-void calibrate() {
+void calibrate()
+{
 	WiFiClientSecure client;
 	client.setInsecure();
 
@@ -100,29 +106,36 @@ void calibrate() {
 	request.end();
 }
 
-void update() {
-	WiFiClientSecure client;
-	client.setInsecure();
-
-	HTTPClient request;
-
-	logLoop("Updating At: " + url);
-	request.begin(client, url);
-	request.addHeader("Content-Type", "application/json");
-	
+void update()
+{
 	activateSensor();
+	const float currentCapacity = getSensorLength();
 
-	const int responseCode = request.PUT("{\"currentCapacity\": " + String(getSensorLength()) + "}");
-
-	logLoop("Updating Response: " + String(responseCode));
-	if (responseCode > 0)
+	if (abs(previousCapacity - currentCapacity) < 2)
 	{
-		logLoop("Updating Result: " + request.getString());
+		WiFiClientSecure client;
+		client.setInsecure();
+
+		HTTPClient request;
+
+		logLoop("Updating At: " + url);
+		request.begin(client, url);
+		request.addHeader("Content-Type", "application/json");
+
+		const int responseCode = request.PUT("{\"currentCapacity\": " + String(currentCapacity) + "}");
+
+		logLoop("Updating Response: " + String(responseCode));
+		if (responseCode > 0)
+		{
+			logLoop("Updating Result: " + request.getString());
+		}
+		else
+		{
+			logLoop("Failed To Update");
+		};
+
+		request.end();
 	}
-	else
-	{
-		logLoop("Failed To Update");
-	};
 
-	request.end();
+	previousCapacity = currentCapacity;
 }
