@@ -14,6 +14,8 @@ const String url = server + "/api/trash-bin/" + String(trashBinId);
 const int sensorTriggerPin = 12;
 const int sensorEchoPin = 14;
 
+const int updateDelay = 5000;
+
 float maxCapacity;
 
 void setup()
@@ -46,7 +48,7 @@ void loop()
 	};
 
 	Serial.println();
-	delay(500);
+	delay(updateDelay);
 };
 
 void logSetup(String text) {
