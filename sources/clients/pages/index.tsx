@@ -36,7 +36,7 @@ const IndexPage = (): JSX.Element => {
 			}
 		};
 
-		const intervalId: NodeJS.Timeout = setInterval(getPercentage, 5000);
+		const intervalId: NodeJS.Timeout = setInterval(getPercentage, 500);
 
 		return () => {
 			clearInterval(intervalId);
