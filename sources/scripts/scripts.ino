@@ -4,8 +4,11 @@
 
 #define SOUND_VELOCITY 0.034
 
-const char *wifiSSID = "Mayoriz_4G";
-const char *wifiPassword = "1rsw4nd4";
+// const char *wifiSSID = "ITK-G.X";
+// const char *wifiPassword = "K@mpusM3rdeka!";
+
+const char *wifiSSID = "Phone";
+const char *wifiPassword = "12345678";
 
 const String server = "https://trashecker-api.irswanda.com";
 const int trashBinId = 1;
@@ -14,7 +17,7 @@ const String url = server + "/api/trash-bin/" + String(trashBinId);
 const int sensorTriggerPin = 12;
 const int sensorEchoPin = 14;
 
-const int updateDelay = 2500;
+const int updateDelay = 1000;
 
 float maxCapacity;
 float previousCapacity = 0;
@@ -92,7 +95,7 @@ void calibrate()
 
 	maxCapacity = getSensorLength();
 
-	const int responseCode = request.PUT("{\"maxCapacity\": " + String(maxCapacity) + ", \"currentCapacity\": 0}");
+	const int responseCode = request.PUT("{\"maxCapacity\": " + String(maxCapacity) + ", \"currentCapacity\": " + String(maxCapacity) + "}");
 
 	logSetup("Calibrating Response: " + String(responseCode));
 	if (responseCode > 0)
@@ -111,9 +114,10 @@ void update()
 {
 	activateSensor();
 	const float currentCapacity = getSensorLength();
-	const boolean isValid = abs(previousCapacity - currentCapacity) < 2;
+	const float value = abs(previousCapacity - currentCapacity);
+	const boolean isValid = value <= 2;
 
-	logLoop("Validate Capacity: " + String(previousCapacity) + " | " + String(currentCapacity) + " | " + (isValid ? "Valid" : "Invalid"));
+	logLoop("Validate Capacity: " + String(previousCapacity) + " | " + String(currentCapacity) + " | " + String(value) + " | " + (isValid ? "Valid" : "Invalid"));
 	if (isValid)
 	{
 		WiFiClientSecure client;
@@ -139,6 +143,14 @@ void update()
 
 		request.end();
 	}
+	else if (value >= 5)
+	{
+		delay(2000);
+	}
+	else if (value > 2)
+	{
+		delay(1000);
+	};
 
 	previousCapacity = currentCapacity;
 }
