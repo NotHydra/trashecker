@@ -7,7 +7,7 @@ async function bootstrap(): Promise<void> {
     dotenv.config();
 
     const app: INestApplication = await NestFactory.create<INestApplication>(AppModule);
-    const port: number = parseInt(process.env.PORT) || 3000;
+    const port: number = parseInt(process.env.PORT) || 3001;
 
     app.use((req: any, res: { header: (arg0: string, arg1: string) => void }, next: () => void) => {
         res.header("Access-Control-Allow-Origin", "*");

@@ -1,7 +1,10 @@
 import { Injectable } from "@nestjs/common";
+import { SocketGateway } from "providers/socket.gateway";
 
 @Injectable()
 export class TrashBinService {
+    constructor(private readonly socketGateway: SocketGateway) {}
+
     private trashBins: TrashBinInterface[] = [
         {
             id: 1,
@@ -31,6 +34,8 @@ export class TrashBinService {
                 }
 
                 console.log(trashBin);
+
+                this.socketGateway.server.emit("trashBinChanged", trashBin);
 
                 return trashBin;
             }
