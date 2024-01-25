@@ -1,8 +1,12 @@
 import axios, { AxiosResponse } from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import io from "socket.io-client";
 
 import TrashBinInterface from "../interfaces/trash-bin.interface";
+
+
+const socket = io('https://trashecker-api.irswanda.com');
 
 const IndexPage = (): JSX.Element => {
 	const [trashBinPercentage, setTrashBinPercetange] = useState<number>(0);
@@ -10,37 +14,41 @@ const IndexPage = (): JSX.Element => {
 	const [trashBinColor, setTrashBinColor] = useState<string>("#33FF66");
 
 	useEffect(() => {
-		const getPercentage = async (): Promise<void> => {
-			try {
-				const response: AxiosResponse<TrashBinInterface[]> = await axios<TrashBinInterface[]>({
-					method: "GET",
-					url: "https://trashecker-api.irswanda.com/api/trash-bin",
-					headers: {
-						"Content-Type": "application/json",
-					}
-				});
+		socket.on("trashBinChanged", (trashBin) => {
+			console.log(trashBin)
+		})
 
-				const trashBin: TrashBinInterface = response.data[0];
+		// const getPercentage = async (): Promise<void> => {
+		// 	try {
+		// 		const response: AxiosResponse<TrashBinInterface[]> = await axios<TrashBinInterface[]>({
+		// 			method: "GET",
+		// 			url: "https://trashecker-api.irswanda.com/api/trash-bin",
+		// 			headers: {
+		// 				"Content-Type": "application/json",
+		// 			}
+		// 		});
 
-				const rawPercentage: number = Math.round(((trashBin.maxCapacity - trashBin.currentCapacity) / trashBin.maxCapacity) * 100) * 2.75;
-				const percentage: number = (rawPercentage < 0) ? 0 : rawPercentage;
-				const { text, color }: { text: string, color: string } = convertPercentage(percentage);
+		// 		const trashBin: TrashBinInterface = response.data[0];
 
-				console.log(trashBin.maxCapacity, trashBin.currentCapacity, percentage)
+		// 		const rawPercentage: number = Math.round(((trashBin.maxCapacity - trashBin.currentCapacity) / trashBin.maxCapacity) * 100) * 2.75;
+		// 		const percentage: number = (rawPercentage < 0) ? 0 : rawPercentage;
+		// 		const { text, color }: { text: string, color: string } = convertPercentage(percentage);
 
-				setTrashBinPercetange(percentage);
-				setTrashBinText(text);
-				setTrashBinColor(color);
-			} catch (error) {
-				console.error("Error fetching data:", error);
-			}
-		};
+		// 		console.log(trashBin.maxCapacity, trashBin.currentCapacity, percentage)
 
-		const intervalId: NodeJS.Timeout = setInterval(getPercentage, 500);
+		// 		setTrashBinPercetange(percentage);
+		// 		setTrashBinText(text);
+		// 		setTrashBinColor(color);
+		// 	} catch (error) {
+		// 		console.error("Error fetching data:", error);
+		// 	}
+		// };
 
-		return () => {
-			clearInterval(intervalId);
-		};
+		// const intervalId: NodeJS.Timeout = setInterval(getPercentage, 500);
+
+		// return () => {
+		// 	clearInterval(intervalId);
+		// };
 	}, []);
 
 	const convertPercentage = (percentage: number): { text: string, color: string } => {
