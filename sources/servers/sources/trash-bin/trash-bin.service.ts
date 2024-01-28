@@ -33,9 +33,7 @@ export class TrashBinService {
                     trashBin.currentCapacity = trashBinDTO.currentCapacity;
                 }
 
-                console.log(trashBin);
-
-                this.socketGateway.server.emit("trashBinChanged", trashBin);
+                this.socketGateway.handleTrashBinChanged(trashBin);
 
                 return trashBin;
             }

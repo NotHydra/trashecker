@@ -7,7 +7,9 @@ export class SocketGateway {
     server: Server;
 
     @SubscribeMessage("trashBinChanged")
-    handleMessage(@MessageBody() trashBin: TrashBinDTOInterface): void {
+    handleTrashBinChanged(@MessageBody() trashBin: TrashBinInterface): void {
+        console.log(trashBin);
+
         this.server.emit("trashBinChanged", trashBin);
     }
 }
